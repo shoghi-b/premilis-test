@@ -1,0 +1,13 @@
+{
+  "id": "v3-iter01",
+  "version": "v3",
+  "label": "this-is-my-short-label",
+  "author": "atharva",
+  "createdAt": "2026-05-28",
+  "tags": ["internal-review"],
+  "description": "this is atharvas first iteration",
+  "supersedes": null,
+  "presentationGroup": null,
+  "changesFromPrevious": [],
+  "feedbackAddressed": []
+}
