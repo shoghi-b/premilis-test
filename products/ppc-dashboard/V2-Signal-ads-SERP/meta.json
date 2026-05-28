@@ -1,0 +1,13 @@
+{
+  "id": "v2-iter01",
+  "version": "v2",
+  "label": "Signal ads SERP",
+  "author": "Rishabh",
+  "createdAt": "2026-05-28",
+  "tags": ["internal-review"],
+  "description": "Design iteration for the Signal Products Ads page focused on improving the ad cards — both product cards and search cards.",
+  "supersedes": null,
+  "presentationGroup": null,
+  "changesFromPrevious": [],
+  "feedbackAddressed": []
+}
