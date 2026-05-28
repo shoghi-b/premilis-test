@@ -1,0 +1,13 @@
+{
+    "id": "v1-iter01",
+    "version": "v1",
+    "label": "<your short label>",
+    "author": "Shoghi",
+    "createdAt": "2026-05-28",
+    "tags": ["internal-review"],
+    "description": "<one or two sentences on what this iteration shows>",
+    "supersedes": null,
+    "presentationGroup": null,
+    "changesFromPrevious": [],
+    "feedbackAddressed": []
+  }
