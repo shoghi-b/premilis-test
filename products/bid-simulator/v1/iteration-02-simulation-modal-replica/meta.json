@@ -1,0 +1,21 @@
+{
+  "id": "v1-iter02",
+  "version": "v1",
+  "label": "Bid settings with simulation modal replica",
+  "author": "Rushali",
+  "createdAt": "2026-06-01",
+  "tags": ["internal-review"],
+  "description": "Refines v1-iter01 by replacing the shell modal with a structured Bid simulation modal and by tightening key screen measurements for review parity.",
+  "supersedes": "v1-iter01",
+  "presentationGroup": null,
+  "changesFromPrevious": [
+    "Replaced the simulation shell modal with a full bid simulation content layout.",
+    "Removed the floating history panel from the bid settings surface.",
+    "Updated Simulation button background to #EDF5FF.",
+    "Set bid-setting tabs to 44px height and ad investment tag to 24px height."
+  ],
+  "feedbackAddressed": [
+    "Need a detailed simulation modal instead of a shell.",
+    "Adjust key sizing and color details called out during internal review."
+  ]
+}

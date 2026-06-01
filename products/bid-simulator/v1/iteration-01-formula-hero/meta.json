@@ -1,0 +1,13 @@
+{
+  "id": "v1-iter01",
+  "version": "v1",
+  "label": "Bid settings with simulation shell",
+  "author": "Rushali",
+  "createdAt": "2026-05-30",
+  "tags": ["internal-review"],
+  "description": "Implements the bid settings screen with the Simulation entry button and a functional shell modal for the next design pass.",
+  "supersedes": null,
+  "presentationGroup": null,
+  "changesFromPrevious": [],
+  "feedbackAddressed": []
+}
