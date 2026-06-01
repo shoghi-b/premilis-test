@@ -1,46 +1,40 @@
-# Context — v1 / iteration-01 — Formula Hero
+# Context - v1 / iteration-01 - Formula Mapping Concept
 
 ## What I worked on
 
-Built the first implementation artifact for the bid settings direction as a static preview screen and wired the Simulation entry interaction to a shell modal.
-Scope focused on getting the screen structure and interaction contract in place, not the full simulation modal design.
+Replaced the shell-only simulator modal with a static concept that maps the visible bid formula to the selected settings and to each row in the simulation table.
 
-## What was considered
+The modal now explains:
+- `Average margin per click = Customer value x Ads CVR`
+- `Computed max bid = Average margin per click x Growth ambition x Product boost`
+- `Growth ambition` as a per-targeting value, not a single global percentage
+- `Timing & Placement` as an influence on `Ads CVR`, not as an isolated multiplier
 
-- Embedding simulation controls inline inside the settings card rather than opening a modal.
-  Rejected for this pass because the requested flow explicitly starts from a Simulation trigger button and modal.
-- Leaving modal behavior unimplemented and only rendering the button.
-  Rejected because a clickable shell with complete close interactions provides a stronger base for the next iteration.
+## Client feedback addressed
+
+Elodie said the simulator was not clear because the top formula did not map to the table below, growth ambition could not be represented as one top-level percentage, and targeting names were missing from the computation rows.
+
+This version makes the computation chain visible and keeps the information tied to the same settings the user configured.
+
+## What was changed
+
+- Removed visible `Cannibalization` from the formula and simulation table because it is not editable and should not be presented as a setting.
+- Kept `Product boost` as a visible multiplier placeholder, styled as non-editable.
+- Added targeting names as the primary row labels: Non-branded, Competitor, Branded, and Discovery.
+- Moved examples such as keywords/ASINs into secondary row text.
+- Added table columns that directly mirror the formula pieces: Customer value, Ads CVR, Average margin per click, Growth ambition, Product boost, and Computed max bid.
+- Added colored column accents and formula chips to connect each table value back to the formula.
 
 ## What was deferred and why
 
-- Full simulation modal content (fields, outputs, chart area, primary/secondary actions) was deferred.
-  Reason: this iteration is intentionally scoped to shell behavior while waiting for modal-specific design specifications.
-- Pixel-perfect parity against the Figma node was deferred pending MCP access.
-  Reason: the available MCP session is authenticated as `vm@kopperdesign.com`, which cannot access the target file.
-
-## What was explicitly not included and why
-
-- No API integration or persistence for settings values.
-  Reason: iteration target is UI-only and interaction scaffolding.
-- No advanced modal behaviors such as focus trapping between all controls.
-  Reason: modal currently contains minimal shell content and will be expanded in the next iteration.
-
-## Parked for later
-
-- Add full simulation modal design spec and interactions.
-- Re-run Figma extraction after authenticating MCP as `rushali@tcules.com` and tighten all spacing/typography tokens to exact node values.
-- Add data states for empty, loading, and validation inside the modal.
-
-## Open questions for reviewers
-
-- Is the current Simulation button size and emphasis correct for this screen hierarchy?
-- Should the next modal iteration include advanced keyboard accessibility (focus trap and initial focus strategy) as part of the same pass?
-- Should this screen remain a standalone preview artifact or be migrated into a runtime app surface in v1-iter02?
+- Real data binding and exact production values remain deferred because this is a static design concept.
+- Editable simulator controls remain deferred because the client asked to clarify the formula mapping first.
+- Product boost is shown as a placeholder multiplier because the team noted the real value may not be exposed.
 
 ## Decisions recorded
 
-- Simulation opens from a dedicated top-level CTA button on the bid settings screen.
-- Modal shell interaction contract is fixed for now: open via button; close via close button, overlay click, or `Esc`.
-- Detailed modal layout and controls are deferred to the next iteration.
-- This folder is treated as immutable baseline history and is superseded by `v1-iter02`.
+- The simulator remains inside a modal.
+- Customer value is always visible because it cannot be disabled; the displayed state is `First + repeat purchase margin`.
+- Ads CVR remains visible even when timing/placement is not represented as a standalone active formula chip, because CVR is always used in the computation.
+- Growth ambition is shown per targeting row.
+- `preview.html` is kept as the archive preview, and `design.html` is added as the requested design artifact with the same concept.
