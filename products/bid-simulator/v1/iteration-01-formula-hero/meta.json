@@ -1,0 +1,18 @@
+{
+  "id": "v1-iter01",
+  "version": "v1",
+  "label": "Bid simulator formula mapping concept",
+  "author": "Rushali",
+  "createdAt": "2026-05-30",
+  "tags": ["internal-review"],
+  "description": "Maps the bid simulator formula to selected settings and targeting-level table values inside the simulation modal.",
+  "supersedes": null,
+  "presentationGroup": null,
+  "changesFromPrevious": [],
+  "feedbackAddressed": [
+    "Clarifies the relationship between the top formula and the simulator table.",
+    "Shows growth ambition as per-targeting values instead of one global percentage.",
+    "Removes cannibalization from the visible simulator because it is not editable.",
+    "Shows Timing & Placement as an influence on Ads CVR."
+  ]
+}
