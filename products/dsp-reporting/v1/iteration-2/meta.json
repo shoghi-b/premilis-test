@@ -1,0 +1,28 @@
+{
+  "id": "dsp-reporting-v1-iteration-2",
+  "version": "v1",
+  "iteration": "v2",
+  "label": "DSP reporting reach comparison rework",
+  "author": "Rushali",
+  "createdAt": "2026-06-02",
+  "tags": ["reach", "comparison", "weekly-granularity", "internal-review"],
+  "description": "Merges Weekly Reach Split into Weekly Cumulative vs Theoretical Reach and adds a persistent Weekly header tag plus v1/v2 switcher.",
+  "figma": {
+    "file": "PPC - Omny Interface Designs",
+    "fileKey": "g7CLQTPWTcmGdKHEY7Kl4n",
+    "screenNodeId": "10994:62853",
+    "fullTableNodeId": "10994:68084"
+  },
+  "supersedes": "dsp-reporting-v1-iteration-1",
+  "presentationGroup": null,
+  "changesFromPrevious": [
+    "Merged Weekly Reach Split with Weekly Cumulative vs Theoretical Reach.",
+    "Embedded retainer/newcomer/churner split in the cumulative side of the comparison visualization.",
+    "Added a Weekly pill to the merged column header.",
+    "Added a bottom-centered v1/v2 iteration switcher."
+  ],
+  "feedbackAddressed": [
+    "Make real-vs-theoretical reach comparison easier by colocating the weekly split with the comparison metric.",
+    "Make the weekly-only nature of the metric explicit so granularity changes are less jarring."
+  ]
+}

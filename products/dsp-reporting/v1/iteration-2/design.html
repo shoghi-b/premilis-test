@@ -1,0 +1,774 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>DSP Reporting - Conversion Replica</title>
+  <style>
+    :root {
+      --nav: #1a1817;
+      --line: #e3e3e3;
+      --grid: #eeeeee;
+      --text: #4d4d4d;
+      --muted: #757575;
+      --soft: #f7f7f7;
+      --blue: #2172e1;
+      --orange: #e95900;
+      --gold: #d7aa0f;
+      --purple: #9447ff;
+      --teal: #348371;
+      --control: #626262;
+      --green: #19a35b;
+      --red: #e34c4c;
+      --bar-orange: #ff8b54;
+      --bar-blue: #4285f4;
+      --bar-purple: #a676f6;
+      --bar-teal: #03aeb4;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      overflow: auto;
+      background: #f5f5f5;
+      color: var(--text);
+      font-family: Figtree, Inter, "Segoe UI", Arial, sans-serif;
+      font-size: 14px;
+    }
+
+    button {
+      font: inherit;
+    }
+
+    .screen {
+      width: 1512px;
+      min-height: 982px;
+      display: grid;
+      grid-template-columns: 64px 1fr;
+      overflow: hidden;
+      background: #fff;
+      border-radius: 16px;
+    }
+
+    .left-nav {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background: var(--nav);
+      color: #fff;
+    }
+
+    .account {
+      width: 64px;
+      height: 64px;
+      display: grid;
+      place-items: center;
+      background: rgba(255, 246, 240, 0.08);
+      border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    }
+
+    .avatar {
+      width: 32px;
+      height: 32px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      background: #ccb771;
+      color: #fff;
+      font-size: 18px;
+      font-weight: 600;
+    }
+
+    .nav-list {
+      width: 100%;
+      display: flex;
+      flex: 1;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      padding-top: 8px;
+    }
+
+    .nav-item {
+      width: 36px;
+      height: 36px;
+      display: grid;
+      place-items: center;
+      border-radius: 6px;
+      color: #d4d0cc;
+      font-size: 16px;
+    }
+
+    .nav-stack {
+      width: 36px;
+      display: flex;
+      flex-direction: column;
+      border-radius: 6px;
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    .nav-stack .nav-item:last-child {
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    .nav-logo {
+      width: 64px;
+      height: 52px;
+      display: grid;
+      place-items: center;
+      background: rgba(255, 246, 240, 0.08);
+    }
+
+    .user-dot {
+      width: 24px;
+      height: 24px;
+      display: grid;
+      place-items: center;
+      border: 1px solid #57c5ff;
+      border-radius: 50%;
+      background: #e5f6ff;
+      color: #1b79af;
+      font-size: 12px;
+    }
+
+    .content {
+      width: 1448px;
+      min-height: 982px;
+      background: #fff;
+    }
+
+    .topbar {
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 24px;
+      border-bottom: 1px solid #f0f0f0;
+      background: #fff;
+    }
+
+    .top-left,
+    .filters,
+    .top-right,
+    .tabs,
+    .evolution {
+      display: flex;
+      align-items: center;
+    }
+
+    .top-left {
+      gap: 28px;
+      min-width: 0;
+    }
+
+    .breadcrumb {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      white-space: nowrap;
+      font-size: 16px;
+    }
+
+    .breadcrumb .previous {
+      color: var(--muted);
+      font-weight: 500;
+    }
+
+    .breadcrumb .current {
+      color: var(--text);
+      font-weight: 700;
+    }
+
+    .filters {
+      gap: 16px;
+    }
+
+    .filter,
+    .range {
+      height: 28px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      max-width: 182px;
+      padding: 4px 12px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fff;
+      color: var(--text);
+      font-size: 14px;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    .filter span.label {
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .badge {
+      min-width: 16px;
+      height: 16px;
+      display: inline-grid;
+      place-items: center;
+      border-radius: 50%;
+      background: var(--blue);
+      color: #fff;
+      font-size: 10px;
+      font-weight: 500;
+      line-height: 1;
+    }
+
+    .top-right {
+      gap: 16px;
+      color: #626262;
+      font-size: 14px;
+    }
+
+    .icon-button {
+      width: 36px;
+      height: 36px;
+      display: grid;
+      place-items: center;
+      border: 0;
+      border-radius: 8px;
+      background: transparent;
+      color: #757575;
+    }
+
+    .tabbar {
+      height: 52px;
+      display: flex;
+      align-items: center;
+      padding: 0 24px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .tabs {
+      gap: 8px;
+    }
+
+    .tab {
+      height: 36px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 8px 16px;
+      border-radius: 8px;
+      color: #757575;
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    .tab.active {
+      background: #fff3ed;
+      color: #e95900;
+      font-weight: 700;
+    }
+
+    .main {
+      padding: 24px;
+    }
+
+    .evolution {
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+
+    .evolution-title {
+      color: #313131;
+      font-weight: 700;
+    }
+
+    .select-pill {
+      height: 28px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 4px 12px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fff;
+      color: #313131;
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    .select-pill.muted {
+      color: #aaa;
+    }
+
+    .table-shell {
+      width: 1400px;
+      height: 400px;
+      overflow-x: auto;
+      overflow-y: hidden;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: #fff;
+    }
+
+    .report-table {
+      width: 2177px;
+      min-width: 2177px;
+      border-collapse: separate;
+      border-spacing: 0;
+      table-layout: fixed;
+      font-size: 13px;
+    }
+
+    .report-table th,
+    .report-table td {
+      height: 28px;
+      padding: 4px 8px;
+      border-right: 1px solid var(--grid);
+      border-bottom: 1px solid var(--grid);
+      background: #fff;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      vertical-align: middle;
+    }
+
+    .report-table th {
+      background: var(--soft);
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 600;
+      line-height: 1.3;
+    }
+
+    .report-table thead tr:first-child th {
+      height: 29px;
+      background: #fcfcfc;
+      text-align: center;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .report-table thead tr:first-child .blank {
+      color: transparent;
+    }
+
+    .report-table .left {
+      text-align: left;
+    }
+
+    .report-table .right {
+      text-align: right;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .report-table .center {
+      text-align: center;
+    }
+
+    .report-table .period {
+      width: 120px;
+    }
+
+    .report-table .zoom {
+      width: 32px;
+      color: #9b9b9b;
+      text-align: center;
+      font-size: 13px;
+    }
+
+    .objective {
+      border-left: 1px solid var(--orange);
+      border-right: 1px solid var(--orange) !important;
+    }
+
+    .efficiency {
+      border-right: 1px solid var(--gold) !important;
+    }
+
+    .business {
+      border-right: 1px solid var(--blue) !important;
+    }
+
+    .brand {
+      border-right: 1px solid var(--purple) !important;
+    }
+
+    .delivery {
+      border-right: 1px solid var(--teal) !important;
+    }
+
+    .control {
+      border-right: 1px solid var(--control) !important;
+    }
+
+    .group-objective {
+      color: var(--orange) !important;
+      border: 1px solid var(--orange) !important;
+      border-bottom: 0 !important;
+      border-radius: 12px 12px 0 0;
+    }
+
+    .group-efficiency {
+      color: #7c5f00 !important;
+      border: 1px solid var(--gold) !important;
+      border-bottom: 0 !important;
+      border-radius: 12px 12px 0 0;
+    }
+
+    .group-business {
+      color: var(--blue) !important;
+      border: 1px solid var(--blue) !important;
+      border-bottom: 0 !important;
+      border-radius: 12px 12px 0 0;
+    }
+
+    .group-brand {
+      color: var(--purple) !important;
+      border: 1px solid var(--purple) !important;
+      border-bottom: 0 !important;
+      border-radius: 12px 12px 0 0;
+    }
+
+    .group-delivery {
+      color: var(--teal) !important;
+      border: 1px solid var(--teal) !important;
+      border-bottom: 0 !important;
+      border-radius: 12px 12px 0 0;
+    }
+
+    .group-control {
+      color: var(--control) !important;
+      border: 1px solid var(--control) !important;
+      border-bottom: 0 !important;
+      border-radius: 12px 12px 0 0;
+    }
+
+    .cell-flex {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 8px;
+    }
+
+    .cell-flex.left {
+      justify-content: flex-start;
+    }
+
+    .mini-track {
+      position: relative;
+      width: 52px;
+      height: 12px;
+      flex: 0 0 auto;
+      overflow: hidden;
+      background: #f7dfd2;
+    }
+
+    .mini-bar {
+      display: block;
+      height: 12px;
+      background: var(--bar-orange);
+    }
+
+    .progress {
+      position: relative;
+      width: 56px;
+      height: 12px;
+      flex: 0 0 auto;
+      background: #e8e8e8;
+    }
+
+    .progress span {
+      display: block;
+      height: 100%;
+      background: #f4b6bd;
+    }
+
+    .progress.good span {
+      background: #c4efd1;
+    }
+
+    .blue-track,
+    .purple-track,
+    .teal-track {
+      position: relative;
+      width: 58px;
+      height: 8px;
+      flex: 0 0 auto;
+      border-radius: 2px;
+      background: #eef4ff;
+    }
+
+    .blue-track span,
+    .purple-track span,
+    .teal-track span {
+      display: block;
+      height: 100%;
+      border-radius: 2px;
+    }
+
+    .blue-track span {
+      background: var(--bar-blue);
+    }
+
+    .purple-track {
+      height: 16px;
+      background: #eee6ff;
+    }
+
+    .purple-track span {
+      background: #c6adfa;
+    }
+
+    .teal-track span {
+      background: var(--bar-teal);
+    }
+
+    .positive {
+      color: var(--green);
+    }
+
+    .negative {
+      color: var(--red);
+    }
+
+    .heat {
+      display: inline-flex;
+      min-width: 40px;
+      justify-content: center;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-weight: 600;
+    }
+
+    .heat.green {
+      background: #dff5e7;
+      color: #16884b;
+    }
+
+    .heat.red {
+      background: #ffdfe1;
+      color: #d12d3b;
+    }
+
+    .euro {
+      background: #d6ecff;
+    }
+
+    .report-table tr:last-child td {
+      border-bottom: 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="screen">
+    <aside class="left-nav" aria-label="Primary navigation">
+      <div class="account"><div class="avatar">H</div></div>
+      <nav class="nav-list">
+        <div class="nav-item" title="Home">⌂</div>
+        <div class="nav-item" title="Catalog">□</div>
+        <div class="nav-item" title="Pages">▤</div>
+        <div class="nav-stack">
+          <div class="nav-item" title="Advertising">◇</div>
+          <div class="nav-item" title="Reporting">⌞</div>
+        </div>
+        <div class="nav-item" title="Finance">◫</div>
+        <div class="nav-item" title="Insights">∥</div>
+      </nav>
+      <div class="nav-logo"><div class="user-dot">☻</div></div>
+    </aside>
+
+    <main class="content">
+      <header class="topbar">
+        <div class="top-left">
+          <div class="breadcrumb" aria-label="Breadcrumb">
+            <span class="previous">Advertising</span>
+            <span>/</span>
+            <span class="current">DSP reporting</span>
+          </div>
+          <div class="filters">
+            <div class="filter"><span>⌁</span><span class="label">Omny, Maped Helix, Organic Tattva</span><span class="badge">4</span><span>⌄</span></div>
+            <div class="filter"><span>▮</span><span class="label">amazon.fr</span><span class="badge">1</span><span>⌄</span></div>
+            <div class="filter"><span>□</span><span class="label">B0BH6DVKZD, B0BH6DVKZD</span><span class="badge">4</span><span>⌄</span></div>
+            <div class="filter"><span>⌁</span><span class="label">Order</span><span>⌄</span></div>
+          </div>
+        </div>
+        <div class="top-right">
+          <div class="range">Daily <span>⌄</span></div>
+          <div>&euro; EUR <span>⌄</span></div>
+          <button class="icon-button" type="button" aria-label="Information">ⓘ</button>
+        </div>
+      </header>
+
+      <div class="tabbar">
+        <div class="tabs">
+          <div class="tab">Overview</div>
+          <div class="tab active">Conversion</div>
+          <div class="tab">Consideration</div>
+          <div class="tab">Awareness</div>
+          <div class="tab">Loyalty</div>
+        </div>
+      </div>
+
+      <section class="main">
+        <div class="evolution">
+          <span class="evolution-title">Evolution</span>
+          <span>↻</span>
+          <div class="select-pill">Weekly <span>⌄</span></div>
+          <div class="select-pill">vs previous week</div>
+          <div class="select-pill muted">vs same week previous year</div>
+        </div>
+
+        <div class="table-shell" aria-label="DSP reporting table with horizontal scroll">
+          <table class="report-table" id="reportTable">
+            <colgroup>
+              <col style="width:32px">
+              <col style="width:120px">
+              <col style="width:159px">
+              <col style="width:106px">
+              <col style="width:115px">
+              <col style="width:96px">
+              <col style="width:108px">
+              <col style="width:108px">
+              <col style="width:108px">
+              <col style="width:88px">
+              <col style="width:96px">
+              <col style="width:88px">
+              <col style="width:96px">
+              <col style="width:112px">
+              <col style="width:78px">
+              <col style="width:144px">
+              <col style="width:70px">
+              <col style="width:86px">
+              <col style="width:86px">
+              <col style="width:74px">
+              <col style="width:144px">
+              <col style="width:62px">
+            </colgroup>
+            <thead>
+              <tr>
+                <th class="blank" colspan="2">Performance</th>
+                <th class="group-objective" colspan="1">Objective</th>
+                <th class="group-efficiency" colspan="2">Efficiency</th>
+                <th class="group-business" colspan="4">Business Results</th>
+                <th class="group-brand" colspan="5">Brand Interest</th>
+                <th class="group-delivery" colspan="3">Delivery Quality</th>
+                <th class="group-control" colspan="5">Control</th>
+              </tr>
+              <tr>
+                <th></th>
+                <th class="period left">Period</th>
+                <th class="objective left">New Customers</th>
+                <th class="efficiency left">ROAS vs Target</th>
+                <th class="efficiency right">CPA NTB Conv.</th>
+                <th class="business right">Spend</th>
+                <th class="business right">vs Assist Sales</th>
+                <th class="business right">% of Assist. sales</th>
+                <th class="business right">Units Sold</th>
+                <th class="brand right">ATC Clicks</th>
+                <th class="brand right">vs ATC Views</th>
+                <th class="brand right">DPV Clicks</th>
+                <th class="brand right">vs DPV Views</th>
+                <th class="brand right">Brand Search</th>
+                <th class="delivery right">eCPM</th>
+                <th class="delivery right">Impressions</th>
+                <th class="delivery right">VTR</th>
+                <th class="control right">Delivery Rate</th>
+                <th class="control right">% NTB cust.</th>
+                <th class="control right">DPVR</th>
+                <th class="control right">Post Click Purch</th>
+                <th class="control right">Halo</th>
+              </tr>
+            </thead>
+            <tbody id="reportBody"></tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    const rows = [
+      ["Oct 2, '23", "455", 20, "3.2", 72, "3.77&euro;", 20, "7 223 &euro;", "16 223 &euro;", 24, 526, 20, "2.1K", "1.8K", "2.1K", "1.8K", "6.1K", "11&euro;", "594K", 96, 100, 100, "0.4%", "2%", "3%"],
+      ["Sep 25, '23", "1.3K", 14, "3.2", 72, "3.77&euro;", 14, "12 150 &euro;", "21 150 &euro;", 23, 1475, 14, "7.5K", "2.1K", "7.5K", "2.1K", "3.9K", "13&euro;", "760K", 94, 23, 23, "0.3%", "4%", "1%"],
+      ["Sep 18, '23", "1.1K", 12, "3.2", 70, "3.77&euro;", 12, "18 100 &euro;", "27 200 &euro;", 20, 1298, 12, "8.2K", "2.1K", "8.2K", "2.1K", "9.2K", "17&euro;", "727K", 59, 55, 55, "0.3%", "6%", "0%"],
+      ["Sep 11, '23", "494", 10, "3.2", 62, "3.77&euro;", 10, "16 950 &euro;", "26 000 &euro;", 22, 654, 10, "3.2K", "2.3K", "3.2K", "2.3K", "2.8K", "7&euro;", "695K", 88, 76, 76, "0.7%", "4%", "0%"],
+      ["Sep 4, '23", "469", 10, "3.2", 44, "3.77&euro;", 10, "11 000 &euro;", "20 000 &euro;", 18, 617, 10, "2.1K", "1.6K", "2.1K", "1.6K", "7.5K", "22&euro;", "743K", 83, 88, 88, "0.6%", "7%", "0%"],
+      ["Aug 28, '23", "456", 8, "3.2", 88, "3.77&euro;", 8, "10 300 &euro;", "19 300 &euro;", 24, 1023, 8, "2.3K", "1.5K", "2.3K", "1.5K", "1.3K", "9&euro;", "710K", 81, 99, 99, "0.4%", "8%", "0%"],
+      ["Aug 21, '23", "461", -6, "3.2", 72, "3.77&euro;", -6, "9 100 &euro;", "18 100 &euro;", 26, 566, -6, "1.8K", "2.1K", "1.8K", "2.1K", "5.5K", "35&euro;", "660K", -78, 80, 80, "0.2%", "-", "0%"],
+      ["Aug 14, '23", "604", -4, "3.2", 36, "3.77&euro;", -4, "8 450 &euro;", "17 450 &euro;", 31, 617, -4, "2.4K", "2.1K", "2.4K", "2.1K", "8.9K", "4&euro;", "645K", 65, 10, 10, "0.3%", "-", "0%"],
+      ["Aug 7, '23", "306", -4, "3.2", 64, "3.77&euro;", -4, "7 223 &euro;", "16 223 &euro;", 15, 1298, -4, "2.4K", "1.9K", "2.4K", "1.9K", "4.1K", "22&euro;", "678K", 52, 12, 12, "0.5%", "-", "0%"],
+      ["Aug 7, '23", "231", -4, "3.2", 48, "3.77&euro;", -4, "15 800 &euro;", "24 800 &euro;", 27, 1475, -4, "2.1K", "1.8K", "2.1K", "1.8K", "9.8K", "22&euro;", "628K", 41, 45, 45, "0.6%", "-", "0%"],
+      ["Aug 7, '23", "313", -4, "3.2", 58, "3.77&euro;", -4, "13 400 &euro;", "22 400 &euro;", 29, 654, -4, "2.2K", "8.8K", "2.2K", "8.8K", "2.2K", "22&euro;", "612K", 37, 66, 66, "0.4%", "-", "0%"],
+      ["Aug 7, 2023", "287", -4, "3.2", 42, "3.77&euro;", -4, "14 600 &euro;", "23 600 &euro;", 30, 526, -4, "1.9K", "6.4K", "1.9K", "6.4K", "6.7K", "22&euro;", "594K", 24, 79, 79, "0.4%", "8%", "0%"]
+    ];
+
+    function changeCell(value) {
+      const tone = value >= 0 ? "positive" : "negative";
+      const sign = value > 0 ? "+" : "";
+      return `<span class="${tone}">${sign}${value}%</span>`;
+    }
+
+    function customerCell(count, change) {
+      const width = Math.max(8, Math.min(52, parseInt(count, 10) / 12 || 18));
+      return `<div class="cell-flex left"><span>${count}</span><span class="mini-track"><span class="mini-bar" style="width:${width}px"></span></span>${changeCell(change)}</div>`;
+    }
+
+    function roasCell(value, width, good) {
+      return `<div class="cell-flex left"><span>${value}</span><span class="progress ${good ? "good" : ""}"><span style="width:${width}%"></span></span></div>`;
+    }
+
+    function blueCell(value, width) {
+      return `<div class="cell-flex"><span>${value}%</span><span class="blue-track"><span style="width:${width}%"></span></span></div>`;
+    }
+
+    function purplePair(value, compare, width) {
+      return `<div class="cell-flex"><span>${value}</span><span class="purple-track"><span style="width:${width}%"></span></span><span>${compare}</span></div>`;
+    }
+
+    function tealCell(value, width) {
+      return `<div class="cell-flex"><span>${value}</span><span class="teal-track"><span style="width:${width}%"></span></span></div>`;
+    }
+
+    function heatCell(value) {
+      const numeric = Number(value);
+      const tone = numeric >= 65 ? "green" : "red";
+      return `<span class="heat ${tone}">${value}%</span>`;
+    }
+
+    const body = document.getElementById("reportBody");
+    body.innerHTML = rows.map((row, index) => {
+      const [period, customers, customerChange, roas, roasWidth, cpa, cpaChange, spend, sales, assist, units, unitsChange, atc, atcViews, dpv, dpvViews, brandSearch, ecpm, impressions, vtr, deliveryRate, ntb, dpvr, postClick, halo] = row;
+      const spendWidth = 30 + (index % 5) * 9;
+      const atcWidth = [26, 58, 70, 34, 24, 30, 18, 28, 26, 22, 22, 19][index];
+      const vtrTone = vtr >= 0 ? "positive" : "negative";
+      return `
+        <tr>
+          <td class="zoom">⌕</td>
+          <td class="left">${period}</td>
+          <td class="objective">${customerCell(customers, customerChange)}</td>
+          <td class="efficiency">${roasCell(roas, roasWidth, index === 10)}</td>
+          <td class="efficiency right"><span>${cpa}</span> <span>${changeCell(cpaChange)}</span></td>
+          <td class="business right">${spend}</td>
+          <td class="business right euro">${sales}</td>
+          <td class="business">${blueCell(assist, spendWidth)}</td>
+          <td class="business right"><span>${units}</span> ${changeCell(unitsChange)}</td>
+          <td class="brand right">${atc}</td>
+          <td class="brand">${purplePair("", atcViews, atcWidth)}</td>
+          <td class="brand right">${dpv}</td>
+          <td class="brand">${purplePair("", dpvViews, atcWidth)}</td>
+          <td class="brand right">${brandSearch}</td>
+          <td class="delivery right">${ecpm}</td>
+          <td class="delivery">${tealCell(impressions, Math.max(12, Math.min(96, parseInt(impressions, 10) / 8)))}</td>
+          <td class="delivery right"><span class="${vtrTone}">${vtr}%</span></td>
+          <td class="control center">${heatCell(deliveryRate)}</td>
+          <td class="control center">${heatCell(ntb)}</td>
+          <td class="control right">${dpvr}</td>
+          <td class="control right">${postClick}</td>
+          <td class="control right">${halo}</td>
+        </tr>
+      `;
+    }).join("");
+  </script>
+</body>
+</html>
