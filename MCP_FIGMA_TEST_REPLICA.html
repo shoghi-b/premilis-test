@@ -1,0 +1,891 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>MCP Figma Test Replica</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&family=Inter:wght@500&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --bg: #d9dde3;
+        --white: #fff;
+        --left-nav: #1a1817;
+        --left-nav-tint: rgba(255, 246, 240, 0.08);
+        --line: #e3e3e3;
+        --cool-line: #e8ebf3;
+        --text-900: #3d3d3d;
+        --text-800: #4d4d4d;
+        --text-700: #757575;
+        --text-600: #595959;
+        --text-500: #999;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--text-600);
+        font-family: "Figtree", system-ui, sans-serif;
+      }
+
+      .frame {
+        width: 1512px;
+        height: 1000px;
+        margin: 0 auto;
+        display: flex;
+        background: var(--white);
+        border-radius: 16px;
+        overflow: hidden;
+      }
+
+      .left-nav {
+        width: 64px;
+        display: flex;
+        flex-direction: column;
+        background: var(--left-nav);
+      }
+
+      .left-top {
+        height: 64px;
+        background: var(--left-nav-tint);
+        border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+        display: grid;
+        place-items: center;
+      }
+
+      .avatar-h {
+        width: 32px;
+        height: 32px;
+        border-radius: 29px;
+        background: #ccb771;
+        color: #fff;
+        font-family: "Inter", sans-serif;
+        font-size: 18px;
+        font-weight: 500;
+        display: grid;
+        place-items: center;
+      }
+
+      .left-mid {
+        height: 884px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        padding: 8px 0;
+      }
+
+      .icon-col {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 4px;
+      }
+
+      .nav-item {
+        width: 36px;
+        height: 36px;
+        border-radius: 12px;
+        display: grid;
+        place-items: center;
+      }
+
+      .nav-item.active {
+        border-radius: 6px;
+        background: rgba(255, 255, 255, 0.2);
+      }
+
+      .nav-item img {
+        width: 16px;
+        height: 16px;
+      }
+
+      .assist-col {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 4px;
+      }
+
+      .assist {
+        width: 36px;
+        height: 36px;
+        border-radius: 4px;
+        display: grid;
+        place-items: center;
+        position: relative;
+      }
+
+      .assist img {
+        width: 20px;
+        height: 20px;
+      }
+
+      .badge {
+        position: absolute;
+        top: -1px;
+        left: 10px;
+        background: #db333b;
+        color: #fff;
+        border-radius: 16px;
+        font-size: 12px;
+        line-height: 1;
+        padding: 2px 4px;
+        font-weight: 700;
+      }
+
+      .left-bottom {
+        height: 52px;
+        background: var(--left-nav-tint);
+        display: grid;
+        place-items: center;
+      }
+
+      .avatar-mini {
+        width: 24px;
+        height: 24px;
+        border-radius: 24px;
+        border: 1px solid #57c5ff;
+        background: #e5f6ff;
+        display: grid;
+        place-items: center;
+      }
+
+      .avatar-mini img {
+        width: 16px;
+        height: 16px;
+      }
+
+      .main {
+        width: 1448px;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        background: #dfe2e7;
+      }
+
+      .bar-1 {
+        height: 60px;
+        background: #fff;
+        padding: 0 24px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+
+      .bar-title {
+        color: var(--text-700);
+        font-size: 16px;
+        font-weight: 500;
+      }
+
+      .selectors {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+      }
+
+      .select {
+        height: 36px;
+        border: 1px solid var(--line);
+        background: #fff;
+        border-radius: 8px;
+        padding: 8px 12px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        color: var(--text-800);
+        font-size: 14px;
+        font-weight: 500;
+      }
+
+      .select img {
+        width: 16px;
+        height: 16px;
+      }
+
+      .divider-v {
+        width: 1px;
+        height: 28px;
+        background: #d2d2d2;
+      }
+
+      .bar-2 {
+        height: 52px;
+        background: #fff;
+        border-bottom: 1px solid var(--line);
+        padding: 8px 24px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+
+      .mini-tabs {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+      }
+
+      .mini-tab {
+        height: 36px;
+        border-radius: 8px;
+        padding: 8px 12px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        color: var(--text-700);
+        font-size: 14px;
+        font-weight: 500;
+      }
+
+      .mini-tab.active {
+        background: #f4f4f4;
+        color: var(--text-800);
+      }
+
+      .mini-tab img {
+        width: 16px;
+        height: 16px;
+      }
+
+      .content {
+        flex: 1;
+        padding-top: 16px;
+      }
+
+      .big-tabs {
+        margin: 0 24px;
+        height: 44px;
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr 44px;
+        border: 1px solid var(--cool-line);
+        border-radius: 8px 8px 0 0;
+        overflow: hidden;
+        background: #fff;
+      }
+
+      .big-tab {
+        border-right: 1px solid var(--cool-line);
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 12px 20px;
+      }
+
+      .big-tab:first-child {
+        background: #f4f8ff;
+        border-top: 1px solid #8ab4ff;
+        border-left: 1px solid #8ab4ff;
+        border-right: 1px solid #8ab4ff;
+      }
+
+      .big-tab img {
+        width: 20px;
+        height: 20px;
+      }
+
+      .big-tab .name {
+        font-size: 16px;
+        line-height: 1.2;
+        font-weight: 600;
+        color: #2172e1;
+        flex: 1;
+      }
+
+      .big-tab:not(:first-child) .name {
+        font-weight: 500;
+        color: var(--text-600);
+      }
+
+      .big-tab .info {
+        width: 12px;
+        height: 12px;
+      }
+
+      .pause-cell {
+        display: grid;
+        place-items: center;
+        background: #fff;
+      }
+
+      .pause-badge {
+        width: 24px;
+        height: 24px;
+        border-radius: 6px;
+        background: #d0e2ff;
+        display: grid;
+        place-items: center;
+      }
+
+      .pause-badge img {
+        width: 16px;
+        height: 16px;
+      }
+
+      .adjust-wrap {
+        position: relative;
+        margin: 24px 24px 0;
+      }
+
+      .formula {
+        height: 58px;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: #fcfcfc;
+        padding: 10px 12px 10px 10px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+      }
+
+      .chips {
+        flex: 1;
+        min-width: 0;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+
+      .pill {
+        height: 38px;
+        border: 1px solid #e8ebf3;
+        border-radius: 6px;
+        background: #fff;
+        padding: 12px;
+        font-size: 14px;
+        font-weight: 500;
+        color: #54595e;
+        white-space: nowrap;
+        display: flex;
+        align-items: center;
+      }
+
+      .pill.primary {
+        background: #f3eeff;
+        border-color: transparent;
+        color: #736bc9;
+      }
+
+      .pill.orange {
+        color: #e05e0f;
+      }
+
+      .pill.teal {
+        color: #056b69;
+      }
+
+      .pill.cyan {
+        color: #0067a8;
+      }
+
+      .formula-label {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        padding: 6px 10px;
+        border-radius: 6px;
+        font-size: 14px;
+        font-weight: 600;
+        color: #595959;
+      }
+
+      .formula-label img {
+        width: 16px;
+        height: 16px;
+      }
+
+      .sim-btn {
+        border: 1px solid #2172e1;
+        border-radius: 6px;
+        background: #edf5ff;
+        color: #2172e1;
+        font-size: 14px;
+        font-weight: 500;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        padding: 8px 12px;
+      }
+
+      .save-wrap {
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        top: 57px;
+        width: 566px;
+        height: 52px;
+        border: 1px solid #c2d4f4;
+        border-top: 0;
+        border-radius: 0 0 12px 12px;
+        background: linear-gradient(180deg, #fcfcfc 0%, #f0f2ff 73%);
+        padding: 2px 20px 14px;
+        display: flex;
+        align-items: flex-start;
+        justify-content: center;
+        gap: 24px;
+        z-index: 2;
+      }
+
+      .history-btn {
+        margin-top: 2px;
+        background: #e5e9ff;
+        border-radius: 8px;
+        color: #556a91;
+        font-size: 14px;
+        font-weight: 500;
+        padding: 8px 12px;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+
+      .history-btn img {
+        width: 16px;
+        height: 16px;
+      }
+
+      .note {
+        display: flex;
+        gap: 8px;
+        margin-top: 2px;
+      }
+
+      .note input {
+        width: 256px;
+        height: 36px;
+        border: 1px solid #e8ebf3;
+        border-radius: 8px;
+        padding: 0 16px;
+        font-size: 14px;
+        color: #a5aab0;
+        outline: none;
+      }
+
+      .btn {
+        height: 36px;
+        border-radius: 8px;
+        font-size: 14px;
+        padding: 8px 12px;
+        border: 1px solid transparent;
+      }
+
+      .btn.apply {
+        background: #22863d80;
+        color: #fff;
+        font-weight: 600;
+      }
+
+      .btn.cancel {
+        background: #fff;
+        border-color: var(--line);
+        color: #999;
+      }
+
+      .center-area {
+        margin-top: 52px;
+        display: flex;
+        justify-content: center;
+      }
+
+      .outer-card {
+        width: 840px;
+        height: 504px;
+        border: 1px solid #dde1e6;
+        border-radius: 12px;
+        background: #fff;
+        padding: 20px;
+      }
+
+      .label-row {
+        height: 30px;
+        display: flex;
+        justify-content: space-between;
+        padding-left: 20px;
+      }
+
+      .tag {
+        height: 24px;
+        background: #54595e;
+        color: #fff;
+        padding: 4px 8px;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        border-radius: 8px 8px 0 0;
+        font-size: 14px;
+      }
+
+      .tag img {
+        width: 16px;
+        height: 16px;
+      }
+
+      .scale {
+        height: 30px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        color: #71777f;
+        font-size: 12px;
+      }
+
+      .scale .box {
+        width: 16px;
+        height: 16px;
+        border-radius: 4px;
+        background: #71777f;
+        display: grid;
+        place-items: center;
+      }
+
+      .scale .box img {
+        width: 12.8px;
+        height: 12.8px;
+      }
+
+      .inner-shell {
+        margin-top: 0;
+        width: 800px;
+        height: 422px;
+        border: 1px solid #dde1e6;
+        border-radius: 12px;
+        box-shadow: 0 4px 2px rgba(218, 218, 218, 0.25);
+        padding: 20px;
+        background: #fff;
+      }
+
+      .performance-card {
+        border: 1px solid #5a52ae;
+        border-radius: 8px;
+        overflow: hidden;
+      }
+
+      .perf-head {
+        background: #f8f9ff;
+        border-top: 1px solid #736bc9;
+        border-left: 1px solid #736bc9;
+        border-right: 1px solid #736bc9;
+        color: #423994;
+        padding: 12px 20px;
+      }
+
+      .perf-head .title {
+        font-size: 14px;
+        font-weight: 500;
+        line-height: 1.16;
+      }
+
+      .perf-head .sub {
+        margin-top: 5px;
+        font-size: 13px;
+        opacity: 0.7;
+        line-height: 1.3;
+      }
+
+      .rows {
+        padding: 20px;
+      }
+
+      .row {
+        height: 52px;
+        border-radius: 8px;
+        border: 1px solid #8ab4ff;
+        border-bottom-width: 2px;
+        background: #f4f8ff;
+        padding: 8px 16px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+
+      .row .lhs {
+        display: flex;
+        gap: 8px;
+      }
+
+      .row .lhs img {
+        width: 16px;
+        height: 16px;
+        margin-top: 1px;
+      }
+
+      .row .t1 {
+        font-size: 14px;
+        font-weight: 500;
+        line-height: 1.16;
+      }
+
+      .row .t2 {
+        font-size: 13px;
+        opacity: 0.7;
+        line-height: 1.1;
+      }
+
+      .pct {
+        height: 36px;
+        min-width: 53px;
+        border: 1px solid #d1d1d1;
+        border-radius: 8px;
+        background: #fff;
+        color: #484c51;
+        font-size: 14px;
+        font-weight: 600;
+        display: grid;
+        place-items: center;
+      }
+
+      .link-bridge {
+        width: 81px;
+        height: 24px;
+        margin: 0 auto;
+        display: grid;
+        place-items: center;
+      }
+
+      .link-bridge img {
+        width: 81px;
+        height: 24px;
+      }
+
+      .row.violet {
+        margin-top: 0;
+        border-color: #c5c0ff;
+        background: #f8f9ff;
+      }
+
+      .row.violet .t1,
+      .row.violet .t2 {
+        color: #423994;
+      }
+
+      .row.pink {
+        border-color: #ffafd2;
+        background: #fff5fa;
+      }
+
+      .row.pink .t1,
+      .row.pink .t2 {
+        color: #db2473;
+      }
+
+      .discovery {
+        margin-top: 24px;
+        height: 52px;
+        border: 1px solid #d1d1d1;
+        border-bottom-width: 2px;
+        border-radius: 8px;
+        background: #fafafa;
+        padding: 8px 16px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+
+      .discovery .lhs {
+        display: flex;
+        gap: 8px;
+      }
+
+      .discovery .lhs img {
+        width: 16px;
+        height: 16px;
+        margin-top: 1px;
+      }
+
+      .discovery .t1 {
+        font-size: 14px;
+        font-weight: 500;
+        color: #595959;
+      }
+
+      .discovery .t2 {
+        font-size: 13px;
+        line-height: 1.3;
+        opacity: 0.7;
+        color: #595959;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="frame">
+      <aside class="left-nav">
+        <div class="left-top"><div class="avatar-h">H</div></div>
+        <div class="left-mid">
+          <div class="icon-col">
+            <div class="nav-item"><img src="https://www.figma.com/api/mcp/asset/ff9e7022-47db-46df-a202-43eae1786c06" alt="" /></div>
+            <div class="nav-item"><img src="https://www.figma.com/api/mcp/asset/a517ccec-f770-4ca7-8b5a-04317a0739f6" alt="" /></div>
+            <div class="nav-item"><img src="https://www.figma.com/api/mcp/asset/4664dbc1-145a-46fc-b25c-f3cd29d0e0ee" alt="" /></div>
+            <div class="nav-item active"><img src="https://www.figma.com/api/mcp/asset/8fb72b63-ef99-45f0-ba4f-755242f3e3fb" alt="" /></div>
+            <div class="nav-item"><img src="https://www.figma.com/api/mcp/asset/fd4b482b-976b-4de9-b553-d42fe8a3fc3c" alt="" /></div>
+            <div class="nav-item"><img src="https://www.figma.com/api/mcp/asset/33a42c25-17f4-453e-9eb9-99ad81625902" alt="" /></div>
+          </div>
+          <div class="assist-col">
+            <div class="assist">
+              <img src="https://www.figma.com/api/mcp/asset/9e550c79-1c7b-447d-9601-ed0d15a8fcb0" alt="" />
+              <span class="badge">99+</span>
+            </div>
+            <div class="assist"><img src="https://www.figma.com/api/mcp/asset/efe548d6-2c16-4183-9005-887021b213b6" alt="" /></div>
+          </div>
+        </div>
+        <div class="left-bottom">
+          <div class="avatar-mini">
+            <img src="https://www.figma.com/api/mcp/asset/24806f34-aea3-4e16-a256-4f91dcf91422" alt="" />
+          </div>
+        </div>
+      </aside>
+
+      <main class="main">
+        <div class="bar-1">
+          <div class="bar-title">PPC settings</div>
+          <div class="selectors">
+            <button class="select"><img src="https://www.figma.com/api/mcp/asset/a10f6b6f-2642-444b-851c-917ea86b0792" alt="" />Omny <img src="https://www.figma.com/api/mcp/asset/f5456949-2ff8-4892-941e-09980e8395c4" alt="" /></button>
+            <button class="select"><img src="https://www.figma.com/api/mcp/asset/5d763c77-7d2d-4ecc-a41b-8b2401892294" alt="" />amazon.fr <img src="https://www.figma.com/api/mcp/asset/f5456949-2ff8-4892-941e-09980e8395c4" alt="" /></button>
+            <div class="divider-v"></div>
+            <button class="select">EUR € <img src="https://www.figma.com/api/mcp/asset/f5456949-2ff8-4892-941e-09980e8395c4" alt="" /></button>
+          </div>
+        </div>
+
+        <div class="bar-2">
+          <div class="mini-tabs">
+            <div class="mini-tab"><img src="https://www.figma.com/api/mcp/asset/ec63af6c-7445-4321-a952-74ed336614c8" alt="" />Strategic</div>
+            <div class="mini-tab"><img src="https://www.figma.com/api/mcp/asset/95b166d7-add8-4120-b0c1-6edfbb477ec3" alt="" />Performance</div>
+          </div>
+          <div class="mini-tab active"><img src="https://www.figma.com/api/mcp/asset/7f4af28f-4154-4366-a8bf-8ba9194b0d8a" alt="" />Settings</div>
+        </div>
+
+        <div class="content">
+          <div class="big-tabs">
+            <div class="big-tab">
+              <img src="https://www.figma.com/api/mcp/asset/f5fbaa1b-fc00-4903-b329-243b51fa2b49" alt="" />
+              <div class="name">Global Bid settings</div>
+              <img class="info" src="https://www.figma.com/api/mcp/asset/1ce8fc47-cc0c-4374-a5bd-ddfee676df1d" alt="" />
+            </div>
+            <div class="big-tab">
+              <img src="https://www.figma.com/api/mcp/asset/6c905e74-e928-4bfa-80a0-624aa3419bdc" alt="" />
+              <div class="name">Sponsored Product settings</div>
+              <img class="info" src="https://www.figma.com/api/mcp/asset/1ce8fc47-cc0c-4374-a5bd-ddfee676df1d" alt="" />
+            </div>
+            <div class="big-tab">
+              <img src="https://www.figma.com/api/mcp/asset/6f27978b-99c1-46c5-bbb4-8a028122aecb" alt="" />
+              <div class="name">Sponsored Brand settings</div>
+              <img class="info" src="https://www.figma.com/api/mcp/asset/1ce8fc47-cc0c-4374-a5bd-ddfee676df1d" alt="" />
+            </div>
+            <div class="pause-cell">
+              <div class="pause-badge"><img src="https://www.figma.com/api/mcp/asset/b8bd3187-25a1-4ee1-bf4d-b86f6bd2c816" alt="" /></div>
+            </div>
+          </div>
+
+          <div class="adjust-wrap">
+            <div class="formula">
+              <div class="chips">
+                <div class="formula-label"><img src="https://www.figma.com/api/mcp/asset/6f792888-e8fc-4fbc-a80c-601d822740fc" alt="" />Final Bid calculation</div>
+                <img src="https://www.figma.com/api/mcp/asset/7e83e7b5-ffcd-42bf-8483-2c46c130e4d3" alt="" width="16" height="16" />
+                <div class="pill primary">Growth Ambition</div>
+                <span style="color: #999">*</span>
+                <div class="pill orange">Customer Value</div>
+                <span style="color: #999">*</span>
+                <div class="pill teal">Timing &amp; Placement</div>
+                <span style="color: #999">*</span>
+                <div class="pill cyan">Cannibalization</div>
+                <span style="color: #999">*</span>
+                <div class="pill">Campaign/Product Boost</div>
+              </div>
+              <button class="sim-btn">Simulation <img src="https://www.figma.com/api/mcp/asset/96d97eb3-d6d5-45d5-846d-7de4cee86d4a" alt="" width="16" height="16" /></button>
+            </div>
+
+            <div class="save-wrap">
+              <div class="history-btn"><img src="https://www.figma.com/api/mcp/asset/ec2320c6-fa61-4ddf-8b4f-cac010071b98" alt="" />History</div>
+              <div class="note">
+                <input type="text" value="Enter note for saving this change" readonly />
+                <button class="btn apply">Apply</button>
+                <button class="btn cancel">Cancel</button>
+              </div>
+            </div>
+
+            <div class="center-area">
+              <div class="outer-card">
+                <div class="label-row">
+                  <div class="tag"><img src="https://www.figma.com/api/mcp/asset/ea81bb5e-797b-42f9-80d2-5affef064a34" alt="" />Ad investment intensity per targeting</div>
+                  <div class="scale">
+                    <span class="box"><img src="https://www.figma.com/api/mcp/asset/9a3d3c22-69e3-47d7-a84b-4060766331de" alt="" /></span>
+                    <span>Scale all values proportionally</span>
+                  </div>
+                </div>
+
+                <div class="inner-shell">
+                  <div class="performance-card">
+                    <div class="perf-head">
+                      <div class="title">Performance Targeting</div>
+                      <div class="sub">Keywords and ASINs that have driven conversions</div>
+                    </div>
+                    <div class="rows">
+                      <div class="row">
+                        <div class="lhs">
+                          <img src="https://www.figma.com/api/mcp/asset/7c580d69-4b2c-4aa1-84a3-1ecd2bc07b7d" alt="" />
+                          <div>
+                            <div class="t1" style="color: #134890">Non-branded keywords</div>
+                            <div class="t2" style="color: #134890">All high-performing keywords, excluding branded terms</div>
+                          </div>
+                        </div>
+                        <div class="pct">50%</div>
+                      </div>
+
+                      <div class="link-bridge">
+                        <img src="https://www.figma.com/api/mcp/asset/c2dd61ca-ce9d-47bf-ada2-5dde1cbe8001" alt="" />
+                      </div>
+
+                      <div class="row violet">
+                        <div class="lhs">
+                          <img src="https://www.figma.com/api/mcp/asset/191a5d97-5ae8-44fc-b5d2-430de22a15b6" alt="" />
+                          <div>
+                            <div class="t1">Competitor’s products</div>
+                            <div class="t2">Target competitor product detail pages</div>
+                          </div>
+                        </div>
+                        <div class="pct">50%</div>
+                      </div>
+
+                      <div class="link-bridge">
+                        <img src="https://www.figma.com/api/mcp/asset/c2dd61ca-ce9d-47bf-ada2-5dde1cbe8001" alt="" />
+                      </div>
+
+                      <div class="row pink">
+                        <div class="lhs">
+                          <img src="https://www.figma.com/api/mcp/asset/c8b4050a-da63-4ac6-ae33-a99625e5aa28" alt="" />
+                          <div>
+                            <div class="t1">Branded keywords &amp; products</div>
+                            <div class="t2">Target your brand&apos;s keywords and products</div>
+                          </div>
+                        </div>
+                        <div class="pct">50%</div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="discovery">
+                    <div class="lhs">
+                      <img src="https://www.figma.com/api/mcp/asset/bcaada9d-42e8-4714-9bd6-3b510282cb88" alt="" />
+                      <div>
+                        <div class="t1">Discovery targeting</div>
+                        <div class="t2">Exploration campaigns to surface new converting keywords</div>
+                      </div>
+                    </div>
+                    <div class="pct">60%</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </body>
+</html>

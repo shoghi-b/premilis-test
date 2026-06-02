@@ -1,0 +1,908 @@
+.screen {
+  --nav: #1a1817;
+  --line: #e3e3e3;
+  --grid: #eeeeee;
+  --text: #4d4d4d;
+  --mutedText: #757575;
+  --soft: #f7f7f7;
+  --blue: #2172e1;
+  --orange: #e95900;
+  --gold: #d7aa0f;
+  --purple: #9447ff;
+  --teal: #348371;
+  --reach: #c23c8d;
+  --reachSoft: #fdeef6;
+  --reachMid: #f7cfe5;
+  --reachDark: #9f2670;
+  --reachOverlay: #a8a0ff;
+  --reachOverlayText: #736bc9;
+  --controlColor: #626262;
+  --greenText: #19a35b;
+  --redText: #e34c4c;
+  width: 1512px;
+  min-height: 982px;
+  display: grid;
+  grid-template-columns: 64px 1fr;
+  overflow: hidden;
+  background: #ffffff;
+  color: var(--text);
+  border-radius: 16px;
+  font-size: 14px;
+}
+
+.leftNav {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: var(--nav);
+  color: #ffffff;
+}
+
+.account {
+  width: 64px;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  background: rgba(255, 246, 240, 0.08);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.accountInner {
+  width: 100%;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+  background: rgba(0, 0, 0, 0.12);
+}
+
+.avatar {
+  width: 32px;
+  height: 32px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: #ccb771;
+  color: #ffffff;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.navList {
+  width: 100%;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding-top: 8px;
+}
+
+.navItem {
+  width: 36px;
+  height: 36px;
+  display: grid;
+  place-items: center;
+  border-radius: 12px;
+  color: #d4d0cc;
+}
+
+.navItemTight {
+  border-radius: 6px;
+}
+
+.navIcon {
+  width: 16px;
+  height: 16px;
+  stroke-width: 1.8;
+}
+
+.inlineIcon {
+  width: 16px;
+  height: 16px;
+  stroke-width: 1.8;
+}
+
+.caretIcon {
+  width: 14px;
+  height: 14px;
+  stroke-width: 1.9;
+}
+
+.navStack {
+  width: 36px;
+  display: flex;
+  flex-direction: column;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.navItemActive {
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.navLogo {
+  width: 64px;
+  height: 52px;
+  display: grid;
+  place-items: center;
+  background: rgba(255, 246, 240, 0.08);
+}
+
+.userDot {
+  width: 24px;
+  height: 24px;
+  display: grid;
+  place-items: center;
+  border: 1px solid #57c5ff;
+  border-radius: 50%;
+  background: #e5f6ff;
+  color: #1b79af;
+}
+
+.userIcon {
+  width: 16px;
+  height: 16px;
+  stroke-width: 1.8;
+}
+
+.content {
+  width: 1448px;
+  min-height: 982px;
+  background: #ffffff;
+}
+
+.topbar {
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 24px;
+  border-bottom: 1px solid #f0f0f0;
+  background: #ffffff;
+}
+
+.topLeft,
+.filters,
+.topRight,
+.tabs,
+.evolution {
+  display: flex;
+  align-items: center;
+}
+
+.topLeft {
+  gap: 28px;
+  min-width: 0;
+}
+
+.breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+  font-size: 16px;
+}
+
+.previous {
+  color: var(--mutedText);
+  font-weight: 500;
+}
+
+.current {
+  color: var(--text);
+  font-weight: 700;
+}
+
+.filters {
+  gap: 16px;
+}
+
+.filter,
+.range {
+  height: 28px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  max-width: 182px;
+  padding: 4px 12px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #ffffff;
+  color: var(--text);
+  font-size: 14px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.filterLabel {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.badge {
+  min-width: 16px;
+  height: 16px;
+  display: inline-grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--blue);
+  color: #ffffff;
+  font-size: 10px;
+  font-weight: 500;
+  line-height: 1;
+}
+
+.topRight {
+  gap: 16px;
+  color: #626262;
+  font-size: 14px;
+}
+
+.iconButton {
+  width: 36px;
+  height: 36px;
+  display: grid;
+  place-items: center;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: #757575;
+}
+
+.tabbar {
+  height: 52px;
+  display: flex;
+  align-items: center;
+  padding: 0 24px;
+  border-bottom: 1px solid var(--line);
+}
+
+.tabs {
+  gap: 8px;
+}
+
+.tab {
+  height: 36px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 16px;
+  border-radius: 8px;
+  color: #757575;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.active {
+  background: #fff3ed;
+  color: #e95900;
+  font-weight: 700;
+}
+
+.main {
+  padding: 24px;
+}
+
+.evolution {
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.evolutionTitle {
+  color: #313131;
+  font-weight: 700;
+}
+
+.selectPill {
+  height: 28px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 12px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #ffffff;
+  color: #313131;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.selectDropdown {
+  position: relative;
+  padding-right: 28px;
+}
+
+.selectInput {
+  border: 0;
+  padding: 0;
+  margin: 0;
+  appearance: none;
+  background: transparent;
+  color: #313131;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1;
+  padding-right: 2px;
+}
+
+.selectInput:focus {
+  outline: 0;
+}
+
+.muted {
+  color: #aaaaaa;
+}
+
+.tableShell {
+  width: 1400px;
+  height: 400px;
+  overflow-x: auto;
+  overflow-y: visible;
+  border: 1px solid var(--grid);
+  border-radius: 12px;
+  background: #ffffff;
+}
+
+.tableStage {
+  position: relative;
+}
+
+.reportTable {
+  width: 100%;
+  min-width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  table-layout: fixed;
+  font-size: 13px;
+}
+
+.reportTable th,
+.reportTable td {
+  height: 28px;
+  padding: 4px 8px;
+  border-right: 1px solid var(--grid);
+  border-bottom: 1px solid var(--grid);
+  background: #ffffff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  vertical-align: middle;
+}
+
+.reportTable th {
+  background: var(--soft);
+  color: var(--mutedText);
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+.reportTable thead tr:first-child th {
+  height: 29px;
+  background: #fcfcfc;
+  text-align: center;
+  font-size: 12px;
+  font-weight: 700;
+  border-bottom: 0 !important;
+}
+
+.blank {
+  color: transparent !important;
+}
+
+.left {
+  text-align: left;
+}
+
+.right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.center {
+  text-align: center;
+}
+
+.period {
+  width: 120px;
+}
+
+.zoom {
+  width: 32px;
+  color: #9b9b9b;
+  text-align: center;
+  font-size: 13px;
+}
+
+.zoomIcon {
+  width: 14px;
+  height: 14px;
+  stroke-width: 1.9;
+  color: #9b9b9b;
+}
+
+.objective {
+  border-left: 1px solid var(--grid);
+  border-right: 1px solid var(--grid) !important;
+}
+
+.efficiency {
+  border-right: 1px solid var(--grid) !important;
+}
+
+.business {
+  border-right: 1px solid var(--grid) !important;
+}
+
+.brand {
+  border-right: 1px solid var(--grid) !important;
+}
+
+.newReach {
+  border-right: 1px solid var(--grid) !important;
+}
+
+.reachSplitColumn {
+  position: relative;
+  overflow: visible !important;
+}
+
+.weeklyHiddenContent {
+  visibility: hidden;
+}
+
+.delivery {
+  border-right: 1px solid var(--grid) !important;
+}
+
+.control {
+  border-right: 1px solid var(--grid) !important;
+}
+
+.groupObjective,
+.groupEfficiency,
+.groupBusiness,
+.groupBrand,
+.groupNewReach,
+.groupDelivery,
+.groupControl {
+  border-bottom: 0 !important;
+  border-radius: 12px 12px 0 0;
+}
+
+.groupObjective {
+  color: var(--orange) !important;
+  border: 1px solid var(--grid) !important;
+}
+
+.groupEfficiency {
+  color: #7c5f00 !important;
+  border: 1px solid var(--grid) !important;
+}
+
+.groupBusiness {
+  color: var(--blue) !important;
+  border: 1px solid var(--grid) !important;
+}
+
+.groupBrand {
+  color: var(--purple) !important;
+  border: 1px solid var(--grid) !important;
+}
+
+.groupNewReach {
+  color: var(--reach) !important;
+  border: 1px solid var(--grid) !important;
+}
+
+.groupDelivery {
+  color: var(--teal) !important;
+  border: 1px solid var(--grid) !important;
+}
+
+.groupControl {
+  color: var(--controlColor) !important;
+  border: 1px solid var(--grid) !important;
+}
+
+.cellFlex {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.cellFlex.left {
+  justify-content: flex-start;
+}
+
+.miniTrack {
+  position: relative;
+  width: 52px;
+  height: 12px;
+  flex: 0 0 auto;
+  overflow: hidden;
+  background: #f7dfd2;
+  border-radius: 4px;
+}
+
+.miniBar {
+  display: block;
+  height: 12px;
+  background: #ff8b54;
+  border-radius: 4px;
+}
+
+.progress {
+  position: relative;
+  width: 56px;
+  height: 12px;
+  flex: 0 0 auto;
+  background: #e8e8e8;
+  border-radius: 4px;
+}
+
+.progress span {
+  display: block;
+  height: 100%;
+  background: #f4b6bd;
+  border-radius: 4px;
+}
+
+.progress.good span {
+  background: #c4efd1;
+}
+
+.blueTrack,
+.tealTrack {
+  position: relative;
+  width: 58px;
+  height: 8px;
+  flex: 0 0 auto;
+  border-radius: 4px;
+  background: #eef4ff;
+}
+
+.blueTrack span,
+.tealTrack span {
+  display: block;
+  height: 100%;
+  border-radius: 4px;
+}
+
+.blueTrack span {
+  background: #4285f4;
+}
+
+.comparisonCell {
+  display: flex;
+  align-items: baseline;
+  gap: 2px;
+  width: 100%;
+}
+
+.comparisonSideRight {
+  display: flex;
+  flex: 1 0 0;
+  align-items: center;
+  justify-content: flex-end;
+  min-width: 0;
+}
+
+.comparisonSideLeft {
+  display: flex;
+  flex: 1 0 0;
+  align-items: center;
+  min-width: 0;
+}
+
+.comparisonChip {
+  display: flex;
+  align-items: center;
+  padding: 3px 4px;
+  border-radius: 4px;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1;
+  color: #54595e;
+  white-space: nowrap;
+}
+
+.comparisonChipPrimary {
+  width: 22px;
+  justify-content: flex-end;
+  background: #e0ecff;
+  z-index: 1;
+}
+
+.comparisonChipSecondary {
+  width: 14px;
+  background: #adcdff;
+}
+
+.comparisonToneBlue .comparisonChipPrimary {
+  background: #e0ecff;
+}
+
+.comparisonToneBlue .comparisonChipSecondary {
+  background: #adcdff;
+}
+
+.comparisonToneReach .comparisonChipPrimary {
+  min-width: 52px;
+  background: var(--reachSoft);
+  color: var(--reachDark);
+}
+
+.comparisonToneReach .comparisonChipSecondary {
+  min-width: 42px;
+  background: var(--reachMid);
+  color: #972961;
+}
+
+.indigoTrack {
+  position: relative;
+  width: 64px;
+  height: 8px;
+  flex: 0 0 auto;
+  border-radius: 4px;
+  background: var(--reachSoft);
+}
+
+.indigoTrack span {
+  display: block;
+  height: 100%;
+  border-radius: 4px;
+  background: var(--reach);
+}
+
+.reachStackedTrack {
+  display: flex;
+  align-items: center;
+  width: 76px;
+  height: 8px;
+  border-radius: 4px;
+  background: #f9edf5;
+  overflow: hidden;
+}
+
+.reachSplitCell {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 8px;
+  overflow: visible;
+}
+
+.reachSplitCell:hover .reachSplitTooltip,
+.reachSplitCell:focus-within .reachSplitTooltip {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.reachStackedIncluded {
+  height: 100%;
+  background: var(--reach);
+}
+
+.reachStackedNew {
+  height: 100%;
+  background: #d86aaa;
+}
+
+.reachStackedExcluded {
+  box-sizing: border-box;
+  height: 100%;
+  border: 1px dashed #d899bc;
+  background: #fff8fc;
+}
+
+.reachSplitTooltip {
+  position: absolute;
+  left: -4px;
+  top: calc(100% + 8px);
+  width: 246px;
+  border: 1px solid #e3e3e3;
+  border-radius: 12px;
+  background: #ffffff;
+  box-shadow: 0 4px 7px rgba(0, 0, 0, 0.1);
+  opacity: 0;
+  transform: translateY(-2px);
+  pointer-events: none;
+  z-index: 20;
+}
+
+.reachTooltipHeader {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 4px;
+  padding: 12px 16px;
+  border-bottom: 1px solid #e3e3e3;
+  color: #757575;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.4;
+}
+
+.reachTooltipTitle,
+.reachTooltipValue {
+  margin: 0;
+}
+
+.reachTooltipContent {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 12px 16px;
+}
+
+.reachTooltipTrack {
+  display: flex;
+  width: 100%;
+  height: 12px;
+  overflow: hidden;
+  border-radius: 2px;
+  background: #f9edf5;
+}
+
+.reachTooltipIncluded {
+  height: 100%;
+  background: var(--reach);
+}
+
+.reachTooltipNew {
+  height: 100%;
+  background: #d86aaa;
+}
+
+.reachTooltipExcluded {
+  box-sizing: border-box;
+  height: 100%;
+  border-left: 1px dashed #d899bc;
+  background: #fff8fc;
+}
+
+.reachTooltipList {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.reachTooltipRow {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+}
+
+.reachTooltipDotIncluded,
+.reachTooltipDotNew,
+.reachTooltipDotExcluded {
+  width: 10px;
+  height: 10px;
+  flex: 0 0 auto;
+  border-radius: 999px;
+}
+
+.reachTooltipDotIncluded {
+  background: var(--reach);
+}
+
+.reachTooltipDotNew {
+  background: #d86aaa;
+}
+
+.reachTooltipDotExcluded {
+  border: 1px dashed #d899bc;
+  background: #fff8fc;
+}
+
+.reachTooltipLabel {
+  flex: 1 1 auto;
+  min-width: 0;
+  color: #999999;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1;
+}
+
+.reachTooltipCount {
+  color: #4d4d4d;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.weeklyColumnOverlayLayer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.weeklyColumnOverlayFrame {
+  position: absolute;
+  top: 57px;
+  bottom: 0;
+  padding: 2px;
+}
+
+.weeklyColumnOverlay {
+  width: 100%;
+  height: 100%;
+  border: 1px dashed var(--reachOverlay);
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.94);
+  backdrop-filter: blur(3px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.weeklyColumnOverlayContent {
+  width: 96px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.weeklyColumnOverlayIcon {
+  width: 16px;
+  height: 16px;
+  stroke-width: 1.9;
+  color: var(--reachOverlayText);
+}
+
+.weeklyColumnOverlayText {
+  margin: 0;
+  color: var(--reachOverlayText);
+  font-size: 13px;
+  line-height: 1.3;
+  text-align: center;
+}
+
+.tealTrack span {
+  background: #03aeb4;
+}
+
+.positive {
+  color: var(--greenText);
+}
+
+.negative {
+  color: var(--redText);
+}
+
+.heat {
+  display: inline-flex;
+  min-width: 40px;
+  justify-content: center;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-weight: 600;
+}
+
+.green {
+  background: #dff5e7;
+  color: #16884b;
+}
+
+.red {
+  background: #ffdfe1;
+  color: #d12d3b;
+}
+
+.euro {
+  background: #d6ecff !important;
+}
+
+.reportTable tr:last-child td {
+  border-bottom: 0;
+}
