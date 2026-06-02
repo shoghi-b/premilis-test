@@ -1,0 +1,34 @@
+{
+  "name": "premilis-test-main",
+  "version": "1.0.0",
+  "description": "This repository is the design team's collaborative workspace and archive. It holds every design iteration the team produces, organized by feature and version, with full context for each iteration preserved permanently.",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "agentation:mcp": "agentation-mcp server",
+    "agentation:doctor": "agentation-mcp doctor"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/shoghi-b/premilis-test.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/shoghi-b/premilis-test/issues"
+  },
+  "homepage": "https://github.com/shoghi-b/premilis-test#readme",
+  "dependencies": {
+    "@babel/runtime": "^7.29.7",
+    "@untitled-ui/icons-react": "^0.1.4",
+    "next": "^16.2.6",
+    "react": "^19.2.6",
+    "react-dom": "^19.2.6"
+  },
+  "devDependencies": {
+    "agentation": "^3.0.2",
+    "agentation-mcp": "^1.2.0"
+  }
+}

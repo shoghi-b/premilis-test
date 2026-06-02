@@ -1,0 +1,1635 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Target Budget Edit Console - Monthly Scenario</title>
+  <style>
+    :root {
+      --bg: #edf0f5;
+      --surface: #f8f9fb;
+      --surface-2: #f2f4f8;
+      --surface-3: #eceff5;
+      --line: #d7dce8;
+      --line-soft: #e7ebf2;
+      --text: #303743;
+      --muted: #748092;
+      --nav: #151515;
+      --blue: #2f78e8;
+      --blue-dark: #245fb8;
+      --blue-soft: #e8f1ff;
+      --green: #1b7a4a;
+      --green-soft: #eaf7ef;
+      --orange: #c66a22;
+      --orange-soft: #fff3e4;
+      --purple: #6557b8;
+      --purple-soft: #f0eefb;
+      --danger: #c54242;
+      --shadow: 0 18px 44px rgba(32, 42, 58, 0.1);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      overflow-x: auto;
+      background: var(--bg);
+      color: var(--text);
+      font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+    }
+
+    button,
+    input {
+      font: inherit;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    .shell {
+      min-width: 1420px;
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 88px 1fr;
+    }
+
+    .sidebar {
+      background: var(--nav);
+      color: #ddd;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px 0 14px;
+      border-right: 1px solid #2b2b2b;
+    }
+
+    .avatar {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: #d2bf72;
+      color: #faf7e6;
+      font-size: 34px;
+      line-height: 44px;
+      text-align: center;
+      margin-bottom: 22px;
+      font-weight: 300;
+    }
+
+    .sicon {
+      width: 48px;
+      height: 48px;
+      border-radius: 10px;
+      display: grid;
+      place-items: center;
+      color: #e2e2e2;
+      margin: 4px 0;
+      font-size: 16px;
+      border: 1px solid transparent;
+    }
+
+    .sicon.active {
+      background: #3a393a;
+      color: #f8b56f;
+    }
+
+    .sicon.bottom {
+      margin-top: auto;
+      margin-bottom: 10px;
+      color: #f15e5e;
+      font-weight: 700;
+    }
+
+    .content {
+      background: var(--bg);
+      display: grid;
+      grid-template-rows: auto auto 1fr auto;
+      border-left: 1px solid #111;
+    }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      height: 88px;
+      padding: 18px 32px;
+      background: #f4f5f7;
+      border-bottom: 1px solid #d8dbe4;
+    }
+
+    .title {
+      margin: 0;
+      color: #626a77;
+      font-size: 36px;
+      font-weight: 400;
+      letter-spacing: 0;
+    }
+
+    .toolbar {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .tool-pill {
+      height: 44px;
+      border: 1px solid #d2d6df;
+      border-radius: 12px;
+      background: #f7f8fa;
+      padding: 0 16px;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      color: #4f5968;
+      font-size: 18px;
+      white-space: nowrap;
+    }
+
+    .subnav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px 32px;
+      background: #f4f5f7;
+      border-bottom: 1px solid #d8dbe4;
+    }
+
+    .subtabs {
+      display: flex;
+      gap: 28px;
+      color: #666;
+      font-size: 22px;
+    }
+
+    .subtab {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      white-space: nowrap;
+    }
+
+    .subtab.active {
+      color: var(--blue);
+    }
+
+    .page {
+      padding: 26px 32px 30px;
+    }
+
+    .scope-grid {
+      display: grid;
+      grid-template-columns: 1.3fr 0.9fr 0.8fr 0.7fr;
+      gap: 16px;
+      margin-bottom: 18px;
+    }
+
+    .field-card,
+    .panel,
+    .mode-tabs,
+    .method-card,
+    .metric-card {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      box-shadow: 0 1px 0 rgba(18, 24, 34, 0.03);
+    }
+
+    .field-card {
+      min-height: 86px;
+      padding: 14px 16px;
+    }
+
+    .label {
+      color: #667184;
+      font-size: 13px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.02em;
+      margin-bottom: 8px;
+    }
+
+    .readonly-value {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      min-height: 38px;
+      color: #1f2630;
+      font-size: 24px;
+      font-weight: 500;
+    }
+
+    .lock {
+      color: #8792a3;
+      font-size: 17px;
+    }
+
+    .status-card {
+      display: grid;
+      grid-template-columns: 1fr auto auto auto;
+      gap: 20px;
+      align-items: center;
+      padding: 16px 18px;
+      margin-bottom: 22px;
+      background: #fff8ec;
+      border: 1px solid #efd9b5;
+      border-radius: 8px;
+      color: #4b3a1e;
+    }
+
+    .status-card strong {
+      display: block;
+      color: #241b0e;
+      font-size: 18px;
+      margin-bottom: 4px;
+    }
+
+    .status-mini {
+      padding-left: 20px;
+      border-left: 1px solid #e2c99b;
+      min-width: 150px;
+    }
+
+    .status-mini span {
+      display: block;
+      color: #765c2a;
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.02em;
+    }
+
+    .status-mini b {
+      color: #241b0e;
+      font-size: 20px;
+      font-weight: 600;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: 500px 1fr;
+      gap: 20px;
+      align-items: start;
+    }
+
+    .left-stack,
+    .right-stack {
+      display: grid;
+      gap: 16px;
+    }
+
+    .mode-tabs {
+      height: 58px;
+      display: inline-flex;
+      align-items: stretch;
+      width: max-content;
+      overflow: hidden;
+      background: #f1f2f4;
+    }
+
+    .tab-btn {
+      min-width: 142px;
+      border: 0;
+      border-right: 1px solid #d9dde6;
+      background: transparent;
+      color: #313946;
+      font-size: 18px;
+      padding: 0 18px;
+    }
+
+    .tab-btn:last-child {
+      border-right: 0;
+    }
+
+    .tab-btn.active {
+      background: #fff;
+      color: var(--blue);
+      box-shadow: inset 0 0 0 2px #d2e3ff;
+    }
+
+    .panel {
+      padding: 18px;
+    }
+
+    .panel-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+
+    .panel-title {
+      margin: 0;
+      color: #242b35;
+      font-size: 24px;
+      font-weight: 600;
+      letter-spacing: 0;
+    }
+
+    .panel-subtitle {
+      margin: 5px 0 0;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.45;
+    }
+
+    .total-readout {
+      text-align: right;
+      color: #222a35;
+      min-width: 120px;
+    }
+
+    .total-readout span {
+      display: block;
+      color: #687486;
+      font-size: 13px;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    .total-readout b {
+      font-size: 26px;
+      font-weight: 600;
+    }
+
+    .month-table {
+      display: grid;
+      gap: 8px;
+    }
+
+    .month-row {
+      display: grid;
+      grid-template-columns: 78px 1fr 112px 44px;
+      gap: 10px;
+      align-items: center;
+      min-height: 52px;
+      padding: 8px 10px;
+      border: 1px solid var(--line-soft);
+      border-radius: 8px;
+      background: #fff;
+    }
+
+    .month-row.past {
+      background: #f0f2f5;
+    }
+
+    .month-name {
+      color: #333b47;
+      font-size: 17px;
+      font-weight: 600;
+    }
+
+    .month-name span {
+      display: block;
+      color: #7d8795;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      margin-top: 2px;
+    }
+
+    .money-input,
+    .yearly-input {
+      width: 100%;
+      height: 42px;
+      border: 1px solid #d6dbe4;
+      border-radius: 8px;
+      background: #fff;
+      color: #151b24;
+      font-size: 22px;
+      font-weight: 500;
+      padding: 0 12px;
+      text-align: right;
+      outline: none;
+    }
+
+    .money-input:focus,
+    .yearly-input:focus {
+      border-color: #8bb5f5;
+      box-shadow: 0 0 0 3px rgba(47, 120, 232, 0.14);
+    }
+
+    .method-tag {
+      justify-self: start;
+      height: 30px;
+      border-radius: 999px;
+      padding: 0 10px;
+      display: inline-flex;
+      align-items: center;
+      color: #31547d;
+      background: #eaf2ff;
+      border: 1px solid #c9dcfb;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .method-tag.equal-month {
+      color: #5f4d16;
+      background: #fff4d8;
+      border-color: #efd282;
+    }
+
+    .method-tag.equal-year {
+      color: #634b86;
+      background: #f2edff;
+      border-color: #d6c8f8;
+    }
+
+    .icon-btn {
+      width: 38px;
+      height: 38px;
+      border: 1px solid #cfd6e2;
+      border-radius: 8px;
+      background: #fff;
+      color: #455266;
+      display: grid;
+      place-items: center;
+      font-size: 20px;
+    }
+
+    .icon-btn:hover {
+      border-color: #8cb5f4;
+      color: var(--blue);
+      background: #f6faff;
+    }
+
+    .method-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+    }
+
+    .method-card {
+      min-height: 106px;
+      padding: 16px;
+      text-align: left;
+      color: #29313d;
+      transition: border-color 160ms ease, background 160ms ease, box-shadow 160ms ease;
+    }
+
+    .method-card.active {
+      background: #dcecff;
+      border-color: var(--blue);
+      box-shadow: inset 0 0 0 1px var(--blue);
+      color: #1f5aa5;
+    }
+
+    .method-title {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 10px;
+      font-size: 19px;
+      font-weight: 600;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      height: 24px;
+      padding: 0 9px;
+      border-radius: 999px;
+      background: #fff;
+      color: #3970c2;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .method-card p {
+      margin: 0;
+      color: #5e6877;
+      font-size: 14px;
+      line-height: 1.45;
+    }
+
+    .chart-wrap {
+      position: relative;
+      height: 392px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fff;
+      overflow: hidden;
+    }
+
+    .chart-toolbar {
+      position: absolute;
+      z-index: 3;
+      top: 16px;
+      left: 18px;
+      right: 18px;
+      display: flex;
+      justify-content: space-between;
+      align-items: start;
+      pointer-events: none;
+    }
+
+    .chart-title {
+      margin: 0;
+      color: #252c37;
+      font-size: 24px;
+      font-weight: 600;
+    }
+
+    .view-switch {
+      pointer-events: auto;
+      display: inline-flex;
+      border: 1px solid #d8dde7;
+      border-radius: 8px;
+      overflow: hidden;
+      background: #f5f6f8;
+    }
+
+    .view-btn {
+      height: 34px;
+      min-width: 70px;
+      border: 0;
+      border-right: 1px solid #d8dde7;
+      background: transparent;
+      color: #536073;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .view-btn:last-child {
+      border-right: 0;
+    }
+
+    .view-btn.active {
+      background: #fff;
+      color: var(--blue);
+    }
+
+    .legend {
+      position: absolute;
+      z-index: 3;
+      top: 66px;
+      right: 18px;
+      display: flex;
+      gap: 16px;
+      align-items: center;
+      color: #6d7787;
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .legend-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+    }
+
+    .legend-line {
+      width: 26px;
+      height: 3px;
+      border-radius: 2px;
+      background: var(--blue);
+    }
+
+    .legend-line.dashed {
+      height: 0;
+      border-top: 2px dashed #8994a5;
+      background: transparent;
+    }
+
+    .legend-line.actual {
+      background: #80a0c8;
+    }
+
+    svg {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+
+    .mini-map {
+      height: 58px;
+      margin-top: 10px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fff;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .mini-window {
+      position: absolute;
+      top: 8px;
+      left: 20%;
+      width: 34%;
+      height: 40px;
+      border: 2px solid #7eadf2;
+      background: rgba(47, 120, 232, 0.11);
+      border-radius: 6px;
+    }
+
+    .metrics {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+    }
+
+    .metric-card {
+      min-height: 92px;
+      padding: 16px 18px;
+      background: #f7f6f1;
+    }
+
+    .metric-card span {
+      display: block;
+      color: #6f7785;
+      font-size: 14px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .metric-card b {
+      display: block;
+      color: #111821;
+      font-size: 28px;
+      font-weight: 600;
+      line-height: 1.05;
+    }
+
+    .metric-card small {
+      display: block;
+      color: #647080;
+      font-size: 14px;
+      margin-top: 8px;
+    }
+
+    .metric-card .positive {
+      color: var(--green);
+      font-weight: 700;
+    }
+
+    .daily-upload {
+      display: grid;
+      gap: 16px;
+    }
+
+    .dropzone {
+      min-height: 220px;
+      border: 2px dashed #bcc7d8;
+      border-radius: 8px;
+      background: #fbfcfe;
+      display: grid;
+      place-items: center;
+      text-align: center;
+      color: #586475;
+      padding: 28px;
+    }
+
+    .dropzone strong {
+      display: block;
+      color: #232b36;
+      font-size: 24px;
+      margin-bottom: 8px;
+    }
+
+    .upload-actions {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      margin-top: 18px;
+    }
+
+    .btn {
+      height: 44px;
+      border: 1px solid #cfd6e2;
+      border-radius: 8px;
+      background: #fff;
+      color: #344052;
+      padding: 0 18px;
+      font-size: 16px;
+      font-weight: 700;
+    }
+
+    .btn.primary {
+      background: #111;
+      border-color: #111;
+      color: #fff;
+    }
+
+    .btn.blue {
+      background: var(--blue);
+      border-color: var(--blue);
+      color: #fff;
+    }
+
+    .btn:disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
+    }
+
+    .footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      min-height: 82px;
+      padding: 16px 32px;
+      background: #111;
+      border-top: 1px solid #2a2a2a;
+    }
+
+    .footer-left,
+    .footer-actions {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .footer .btn {
+      min-width: 150px;
+      height: 54px;
+      font-size: 18px;
+    }
+
+    .footer .btn.cancel {
+      background: transparent;
+      border-color: transparent;
+      color: #a8acb2;
+      min-width: 90px;
+    }
+
+    .footer .btn.primary {
+      min-width: 230px;
+      background: #f5f5f5;
+      border-color: #f5f5f5;
+      color: #111;
+    }
+
+    .footer-note {
+      color: #a8acb2;
+      font-size: 14px;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    .toast {
+      position: fixed;
+      z-index: 20;
+      right: 28px;
+      bottom: 100px;
+      min-width: 330px;
+      padding: 16px 18px;
+      border-radius: 8px;
+      background: #14241d;
+      color: #effbf4;
+      box-shadow: var(--shadow);
+      opacity: 0;
+      transform: translateY(16px);
+      pointer-events: none;
+      transition: opacity 180ms ease, transform 180ms ease;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      z-index: 10;
+      background: rgba(18, 22, 32, 0.56);
+      display: grid;
+      place-items: center;
+      padding: 30px;
+    }
+
+    .modal {
+      width: min(980px, calc(100vw - 64px));
+      max-height: calc(100vh - 64px);
+      overflow: auto;
+      background: #f8f9fb;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      box-shadow: 0 26px 80px rgba(0, 0, 0, 0.28);
+    }
+
+    .modal-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 18px;
+      padding: 22px 24px;
+      border-bottom: 1px solid var(--line);
+      background: #fff;
+    }
+
+    .modal-head h2 {
+      margin: 0;
+      font-size: 28px;
+      font-weight: 600;
+    }
+
+    .modal-head p {
+      margin: 5px 0 0;
+      color: var(--muted);
+      font-size: 15px;
+    }
+
+    .modal-body {
+      padding: 22px 24px 24px;
+      display: grid;
+      gap: 18px;
+    }
+
+    .modal-stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+    }
+
+    .daily-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 8px;
+    }
+
+    .day-cell {
+      min-height: 84px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fff;
+      padding: 8px;
+      display: grid;
+      grid-template-rows: auto 1fr;
+      gap: 6px;
+    }
+
+    .day-cell.locked {
+      border-color: #8ab6f5;
+      background: #edf5ff;
+    }
+
+    .day-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: #6d7787;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .day-cell input {
+      width: 100%;
+      min-width: 0;
+      border: 0;
+      background: transparent;
+      color: #17202c;
+      font-size: 17px;
+      font-weight: 600;
+      text-align: right;
+      outline: none;
+    }
+
+    .modal-actions {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      padding-top: 4px;
+    }
+
+    @media (max-width: 900px) {
+      .shell {
+        min-width: 0;
+        grid-template-columns: 1fr;
+      }
+
+      .sidebar {
+        display: none;
+      }
+
+      .topbar,
+      .subnav,
+      .page,
+      .footer {
+        padding-left: 18px;
+        padding-right: 18px;
+      }
+
+      .scope-grid,
+      .layout,
+      .method-grid,
+      .metrics,
+      .modal-stats {
+        grid-template-columns: 1fr;
+      }
+
+      .title {
+        font-size: 27px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <aside class="sidebar" aria-label="Application navigation">
+      <div class="avatar">o</div>
+      <div class="sicon">P</div>
+      <div class="sicon">A</div>
+      <div class="sicon active">B</div>
+      <div class="sicon">L</div>
+      <div class="sicon">V</div>
+      <div class="sicon bottom">x</div>
+    </aside>
+
+    <main class="content">
+      <header class="topbar">
+        <h1 class="title">Budget Cockpit</h1>
+        <div class="toolbar">
+          <div class="tool-pill">Workspace <strong>Omny Demo</strong></div>
+          <div class="tool-pill">Currency <strong>EUR</strong> <span class="lock">lock</span></div>
+        </div>
+      </header>
+
+      <nav class="subnav" aria-label="Dashboard tabs">
+        <div class="subtabs">
+          <span class="subtab">Performance</span>
+          <span class="subtab">Advertising</span>
+          <span class="subtab active">Budget Cockpit</span>
+          <span class="subtab">Listing</span>
+          <span class="subtab">Profit</span>
+          <span class="subtab">Vendor</span>
+        </div>
+        <button class="btn">Back to overview</button>
+      </nav>
+
+      <section class="page">
+        <div class="scope-grid" aria-label="Locked scenario scope">
+          <div class="field-card">
+            <div class="label">Seller</div>
+            <div class="readonly-value">Acme Corp <span class="lock">locked</span></div>
+          </div>
+          <div class="field-card">
+            <div class="label">Marketplace</div>
+            <div class="readonly-value">France <span class="lock">locked</span></div>
+          </div>
+          <div class="field-card">
+            <div class="label">Year</div>
+            <div class="readonly-value">2026 <span class="lock">locked</span></div>
+          </div>
+          <div class="field-card">
+            <div class="label">Currency</div>
+            <div class="readonly-value">EUR <span class="lock">locked</span></div>
+          </div>
+        </div>
+
+        <div class="status-card">
+          <div>
+            <strong>Existing target found for this seller, marketplace, and year</strong>
+            The validated scenario will overwrite the active revenue target used by dashboard KPI comparisons.
+          </div>
+          <div class="status-mini"><span>Current target</span><b>EUR 342,500</b></div>
+          <div class="status-mini"><span>Last updated</span><b>Mar 12, 2026</b></div>
+          <div class="status-mini"><span>Achievement</span><b>41%</b></div>
+        </div>
+
+        <div class="layout">
+          <div class="left-stack">
+            <div class="mode-tabs" role="tablist" aria-label="Budget input mode">
+              <button class="tab-btn active" data-mode="monthly" role="tab">Monthly</button>
+              <button class="tab-btn" data-mode="yearly" role="tab">Yearly</button>
+              <button class="tab-btn" data-mode="daily" role="tab">Daily CSV</button>
+            </div>
+
+            <section class="panel mode-panel" id="monthlyPanel">
+              <div class="panel-head">
+                <div>
+                  <h2 class="panel-title">Monthly revenue target</h2>
+                  <p class="panel-subtitle">Full numbers only. Past months stay editable and are shown with a muted background.</p>
+                </div>
+                <div class="total-readout"><span>Total</span><b id="monthlyTotal">EUR 350,000</b></div>
+              </div>
+              <div class="month-table" id="monthTable"></div>
+            </section>
+
+            <section class="panel mode-panel hidden" id="yearlyPanel">
+              <div class="panel-head">
+                <div>
+                  <h2 class="panel-title">Yearly revenue target</h2>
+                  <p class="panel-subtitle">Enter one annual target, then choose how to distribute it across months and days.</p>
+                </div>
+              </div>
+              <input class="yearly-input" id="yearlyInput" value="350,000" aria-label="Yearly revenue target">
+            </section>
+
+            <section class="panel mode-panel hidden" id="dailyPanel">
+              <div class="panel-head">
+                <div>
+                  <h2 class="panel-title">Daily CSV upload</h2>
+                  <p class="panel-subtitle">Upload daily values and stay in this tab to validate the resulting daily scenario.</p>
+                </div>
+              </div>
+              <div class="daily-upload">
+                <div class="dropzone" id="dropzone">
+                  <div>
+                    <strong id="uploadTitle">Drop a daily revenue target CSV</strong>
+                    <span id="uploadCopy">Expected columns: date, revenue_target. No monthly conversion will be applied.</span>
+                    <div class="upload-actions">
+                      <button class="btn blue" id="uploadBtn">Choose CSV</button>
+                      <button class="btn hidden" id="reuploadBtn">Reupload</button>
+                    </div>
+                  </div>
+                </div>
+                <button class="btn hidden" id="smartCsvBtn">Apply Smart smoothing on top of uploaded daily data</button>
+              </div>
+            </section>
+          </div>
+
+          <div class="right-stack">
+            <section class="panel" id="allocationPanel">
+              <div class="panel-head">
+                <div>
+                  <h2 class="panel-title">Choose how your target is spread across each day</h2>
+                  <p class="panel-subtitle">These are scenario actions. Click a method to recalculate the daily curve immediately.</p>
+                </div>
+              </div>
+              <div class="method-grid">
+                <button class="method-card active" data-method="smart">
+                  <div class="method-title">Smart allocation <span class="badge">Recommended</span></div>
+                  <p>Reuses last year's daily seasonality and smooths weekends, peaks, and slow periods.</p>
+                </button>
+                <button class="method-card" data-method="equal-month">
+                  <div class="method-title">Equal per month</div>
+                  <p>Each monthly amount is divided evenly by the number of days in that month.</p>
+                </button>
+                <button class="method-card" data-method="equal-year">
+                  <div class="method-title">Equal per year</div>
+                  <p>The annual total is divided evenly across all 365 days.</p>
+                </button>
+              </div>
+            </section>
+
+            <section class="panel">
+              <div class="chart-wrap">
+                <div class="chart-toolbar">
+                  <div>
+                    <h2 class="chart-title">Scenario preview</h2>
+                    <p class="panel-subtitle" id="chartSubtitle">Smart allocation smooths the monthly target into daily values.</p>
+                  </div>
+                  <div class="view-switch" aria-label="Graph zoom">
+                    <button class="view-btn active" data-view="year">Year</button>
+                    <button class="view-btn" data-view="quarter">Quarter</button>
+                    <button class="view-btn" data-view="month">Month</button>
+                  </div>
+                </div>
+                <div class="legend">
+                  <span class="legend-item"><span class="legend-line"></span>New scenario</span>
+                  <span class="legend-item"><span class="legend-line dashed"></span>Current target</span>
+                  <span class="legend-item"><span class="legend-line actual"></span>Actuals</span>
+                </div>
+                <svg id="chart" viewBox="0 0 820 392" role="img" aria-label="Revenue scenario preview chart"></svg>
+              </div>
+              <div class="mini-map" aria-hidden="true">
+                <svg id="miniChart" viewBox="0 0 820 58"></svg>
+                <div class="mini-window" id="miniWindow"></div>
+              </div>
+            </section>
+
+            <div class="metrics">
+              <div class="metric-card">
+                <span>Total</span>
+                <b id="metricTotal">EUR 350,000</b>
+                <small class="positive" id="metricVsCurrent">+EUR 7,500 vs current</small>
+              </div>
+              <div class="metric-card">
+                <span>Vs last year</span>
+                <b id="metricVsLast">+12%</b>
+                <small>EUR 313k to scenario total</small>
+              </div>
+              <div class="metric-card">
+                <span>Days changing</span>
+                <b id="metricDays">287 / 365</b>
+                <small>Includes 124 past days</small>
+              </div>
+              <div class="metric-card">
+                <span>Peak month</span>
+                <b id="metricPeak">Nov</b>
+                <small id="metricPeakCopy">unchanged</small>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <footer class="footer">
+        <div class="footer-left">
+          <button class="btn cancel">Cancel</button>
+          <span class="footer-note">Validation overwrites the active target for Acme Corp, France, 2026.</span>
+        </div>
+        <div class="footer-actions">
+          <button class="btn" id="resetBtn">Reset scenario</button>
+          <button class="btn primary" id="validateBtn">Validate Scenario</button>
+        </div>
+      </footer>
+    </main>
+  </div>
+
+  <div class="modal-backdrop hidden" id="modalBackdrop">
+    <section class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <div class="modal-head">
+        <div>
+          <h2 id="modalTitle">Fine-tune June daily values</h2>
+          <p>Monthly total stays fixed. Editing and pinning one day redistributes the unlocked days automatically.</p>
+        </div>
+        <button class="icon-btn" id="closeModal" aria-label="Close daily fine tune modal">x</button>
+      </div>
+      <div class="modal-body">
+        <div class="modal-stats">
+          <div class="metric-card">
+            <span>Monthly total</span>
+            <b id="modalTotal">EUR 29,000</b>
+            <small>fixed while editing</small>
+          </div>
+          <div class="metric-card">
+            <span>Average daily</span>
+            <b id="modalAverage">EUR 967</b>
+            <small id="modalMethod">Smart allocation</small>
+          </div>
+          <div class="metric-card">
+            <span>Customised days</span>
+            <b id="modalCustom">0 / 30</b>
+            <small>pinned values keep their amount</small>
+          </div>
+        </div>
+        <div class="method-grid">
+          <button class="method-card active modal-method" data-modal-method="smart">
+            <div class="method-title">Apply Smart to this month</div>
+            <p>Use daily seasonality inside the selected month.</p>
+          </button>
+          <button class="method-card modal-method" data-modal-method="equal-month">
+            <div class="method-title">Apply Equal to this month</div>
+            <p>Redistribute remaining unlocked days evenly.</p>
+          </button>
+          <button class="method-card modal-method" data-modal-method="reset">
+            <div class="method-title">Clear manual pins</div>
+            <p>Remove fixed days and return the month to the selected allocation.</p>
+          </button>
+        </div>
+        <div class="daily-grid" id="dailyGrid"></div>
+        <div class="modal-actions">
+          <span class="panel-subtitle">Click a day value to customise it. The pin appears after editing.</span>
+          <button class="btn primary" id="applyMonth">Apply month changes</button>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <div class="toast" id="toast">Scenario validated. The Budget Overview table now references this target.</div>
+
+  <script>
+    const months = [
+      { name: "Jan", days: 31, amount: 25000, past: true },
+      { name: "Feb", days: 28, amount: 22000, past: true },
+      { name: "Mar", days: 31, amount: 28000, past: true },
+      { name: "Apr", days: 30, amount: 30000, past: true },
+      { name: "May", days: 31, amount: 32000, past: false },
+      { name: "Jun", days: 30, amount: 29000, past: false },
+      { name: "Jul", days: 31, amount: 26000, past: false },
+      { name: "Aug", days: 31, amount: 20000, past: false },
+      { name: "Sep", days: 30, amount: 31000, past: false },
+      { name: "Oct", days: 31, amount: 34000, past: false },
+      { name: "Nov", days: 30, amount: 38000, past: false },
+      { name: "Dec", days: 31, amount: 35000, past: false }
+    ];
+
+    const currentMonthly = [24000, 21000, 27500, 29500, 30000, 28000, 25500, 21500, 29500, 33000, 36500, 32000];
+    const lastYearMonthly = [22000, 20500, 24000, 26500, 27800, 25000, 23500, 19800, 27600, 30000, 32600, 28500];
+    const methodLabels = {
+      smart: "Smart",
+      "equal-month": "Equal month",
+      "equal-year": "Equal year"
+    };
+
+    let activeMode = "monthly";
+    let activeMethod = "smart";
+    let activeView = "year";
+    let uploadedDaily = false;
+    let selectedMonthIndex = 5;
+    const monthMethods = months.map(() => "smart");
+    const monthPins = months.map(() => ({}));
+
+    const monthTable = document.getElementById("monthTable");
+    const chart = document.getElementById("chart");
+    const miniChart = document.getElementById("miniChart");
+    const monthlyTotal = document.getElementById("monthlyTotal");
+    const yearlyInput = document.getElementById("yearlyInput");
+    const metricTotal = document.getElementById("metricTotal");
+    const metricVsCurrent = document.getElementById("metricVsCurrent");
+    const metricVsLast = document.getElementById("metricVsLast");
+    const metricDays = document.getElementById("metricDays");
+    const metricPeak = document.getElementById("metricPeak");
+    const metricPeakCopy = document.getElementById("metricPeakCopy");
+    const chartSubtitle = document.getElementById("chartSubtitle");
+    const allocationPanel = document.getElementById("allocationPanel");
+    const modalBackdrop = document.getElementById("modalBackdrop");
+    const dailyGrid = document.getElementById("dailyGrid");
+    const toast = document.getElementById("toast");
+
+    function formatNumber(value) {
+      return Math.round(value).toLocaleString("en-US");
+    }
+
+    function formatMoney(value) {
+      return "EUR " + formatNumber(value);
+    }
+
+    function parseMoney(value) {
+      const clean = String(value).replace(/[^0-9.-]/g, "");
+      const parsed = Number(clean);
+      return Number.isFinite(parsed) ? Math.max(0, parsed) : 0;
+    }
+
+    function totalAmount() {
+      return months.reduce((sum, month) => sum + month.amount, 0);
+    }
+
+    function renderMonths() {
+      monthTable.innerHTML = months.map((month, index) => {
+        const method = monthMethods[index];
+        return `
+          <div class="month-row ${month.past ? "past" : ""}">
+            <div class="month-name">${month.name}<span>${month.past ? "Past" : month.days + " days"}</span></div>
+            <input class="money-input" inputmode="numeric" data-month="${index}" value="${formatNumber(month.amount)}" aria-label="${month.name} target amount">
+            <span class="method-tag ${method}">${methodLabels[method]}</span>
+            <button class="icon-btn" data-expand="${index}" aria-label="Fine tune ${month.name} daily values">+</button>
+          </div>
+        `;
+      }).join("");
+
+      monthTable.querySelectorAll(".money-input").forEach((input) => {
+        input.addEventListener("input", (event) => {
+          const index = Number(event.currentTarget.dataset.month);
+          months[index].amount = parseMoney(event.currentTarget.value);
+          updateAll();
+        });
+        input.addEventListener("blur", (event) => {
+          const index = Number(event.currentTarget.dataset.month);
+          event.currentTarget.value = formatNumber(months[index].amount);
+        });
+      });
+
+      monthTable.querySelectorAll("[data-expand]").forEach((button) => {
+        button.addEventListener("click", () => openModal(Number(button.dataset.expand)));
+      });
+    }
+
+    function weightedDays(month, method, monthIndex) {
+      const values = [];
+      for (let day = 1; day <= month.days; day += 1) {
+        if (method === "equal-month") {
+          values.push(1);
+        } else if (method === "equal-year") {
+          values.push(1);
+        } else {
+          const weekendBoost = day % 7 === 0 || day % 7 === 6 ? 1.18 : 0.94;
+          const monthCurve = 1 + Math.sin((day / month.days) * Math.PI) * 0.18;
+          const seasonal = 1 + Math.sin(((monthIndex + 1) / 12) * Math.PI * 1.35) * 0.12;
+          values.push(weekendBoost * monthCurve * seasonal);
+        }
+      }
+      return values;
+    }
+
+    function dailySeries(sourceMonths, methodMode, perMonthMethods) {
+      const total = sourceMonths.reduce((sum, value) => sum + value, 0);
+      if (methodMode === "equal-year") {
+        return Array.from({ length: 365 }, () => total / 365);
+      }
+
+      const series = [];
+      sourceMonths.forEach((amount, index) => {
+        const month = months[index];
+        const method = perMonthMethods ? perMonthMethods[index] : methodMode;
+        const weights = weightedDays(month, method, index);
+        const weightTotal = weights.reduce((sum, value) => sum + value, 0);
+        const pins = monthPins[index];
+        const pinnedIndexes = Object.keys(pins).map(Number);
+        const pinnedTotal = pinnedIndexes.reduce((sum, dayIndex) => sum + pins[dayIndex], 0);
+        const unlockedWeight = weights.reduce((sum, value, dayIndex) => pinnedIndexes.includes(dayIndex) ? sum : sum + value, 0);
+
+        weights.forEach((weight, dayIndex) => {
+          if (pins[dayIndex] !== undefined) {
+            series.push(pins[dayIndex]);
+          } else {
+            const remaining = Math.max(0, amount - pinnedTotal);
+            series.push(unlockedWeight > 0 ? remaining * weight / unlockedWeight : remaining / month.days);
+          }
+        });
+      });
+      return series;
+    }
+
+    function rawStepSeries() {
+      const series = [];
+      months.forEach((month) => {
+        for (let day = 0; day < month.days; day += 1) {
+          series.push(month.amount / month.days);
+        }
+      });
+      return series;
+    }
+
+    function makePath(values, width, height, pad, stepped) {
+      const maxValue = Math.max(...values, ...dailySeries(currentMonthly, "smart"), ...dailySeries(lastYearMonthly, "smart")) * 1.14;
+      const xScale = (index) => pad.left + (index / (values.length - 1)) * (width - pad.left - pad.right);
+      const yScale = (value) => height - pad.bottom - (value / maxValue) * (height - pad.top - pad.bottom);
+      let path = `M ${xScale(0).toFixed(1)} ${yScale(values[0]).toFixed(1)}`;
+      for (let index = 1; index < values.length; index += 1) {
+        const x = xScale(index).toFixed(1);
+        const y = yScale(values[index]).toFixed(1);
+        if (stepped) {
+          const prevX = xScale(index - 1).toFixed(1);
+          const prevY = yScale(values[index - 1]).toFixed(1);
+          path += ` L ${x} ${prevY} L ${x} ${y}`;
+        } else {
+          path += ` L ${x} ${y}`;
+        }
+      }
+      return path;
+    }
+
+    function areaPath(values, width, height, pad) {
+      const line = makePath(values, width, height, pad, false);
+      return `${line} L ${width - pad.right} ${height - pad.bottom} L ${pad.left} ${height - pad.bottom} Z`;
+    }
+
+    function renderChart() {
+      const width = 820;
+      const height = 392;
+      const pad = { top: 104, right: 38, bottom: 48, left: 42 };
+      const current = dailySeries(currentMonthly, "smart");
+      const lastYear = dailySeries(lastYearMonthly, "smart");
+      let scenario = dailySeries(months.map((month) => month.amount), activeMethod, monthMethods);
+      let stepped = false;
+
+      if (activeMethod === "raw") {
+        scenario = rawStepSeries();
+        stepped = true;
+      }
+
+      const todayX = pad.left + (124 / 364) * (width - pad.left - pad.right);
+      const ticks = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+      const grid = [0.25, 0.5, 0.75].map((ratio) => {
+        const y = pad.top + ratio * (height - pad.top - pad.bottom);
+        return `<line x1="${pad.left}" y1="${y}" x2="${width - pad.right}" y2="${y}" stroke="#edf0f5" />`;
+      }).join("");
+      const xLabels = ticks.map((tick, index) => {
+        const x = pad.left + (index / 11) * (width - pad.left - pad.right);
+        return `<text x="${x}" y="${height - 18}" text-anchor="middle" fill="#7a8494" font-size="12" font-weight="700">${tick}</text>`;
+      }).join("");
+
+      chart.innerHTML = `
+        <rect width="${width}" height="${height}" fill="#fff"></rect>
+        ${grid}
+        <path d="${areaPath(lastYear, width, height, pad)}" fill="#d9dee7" opacity="0.72"></path>
+        <path d="${makePath(current, width, height, pad, false)}" fill="none" stroke="#8994a5" stroke-width="2" stroke-dasharray="6 7"></path>
+        <path d="${makePath(scenario, width, height, pad, stepped)}" fill="none" stroke="#2f78e8" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"></path>
+        <line x1="${todayX}" y1="${pad.top - 10}" x2="${todayX}" y2="${height - pad.bottom}" stroke="#cfd6e2" stroke-width="2" stroke-dasharray="4 6"></line>
+        <text x="${todayX + 8}" y="${pad.top - 18}" fill="#7f8998" font-size="12" font-weight="700">today</text>
+        <line x1="${pad.left}" y1="${height - pad.bottom}" x2="${width - pad.right}" y2="${height - pad.bottom}" stroke="#dfe4ec"></line>
+        ${xLabels}
+      `;
+
+      miniChart.innerHTML = `
+        <rect width="820" height="58" fill="#fff"></rect>
+        <path d="${areaPath(scenario, 820, 58, { top: 8, right: 16, bottom: 8, left: 16 })}" fill="#dcecff"></path>
+        <path d="${makePath(scenario, 820, 58, { top: 8, right: 16, bottom: 8, left: 16 }, stepped)}" fill="none" stroke="#2f78e8" stroke-width="2"></path>
+      `;
+    }
+
+    function updateMetrics() {
+      const total = totalAmount();
+      const currentTotal = currentMonthly.reduce((sum, value) => sum + value, 0);
+      const lastTotal = lastYearMonthly.reduce((sum, value) => sum + value, 0);
+      const peakIndex = months.reduce((winner, month, index) => month.amount > months[winner].amount ? index : winner, 0);
+      monthlyTotal.textContent = formatMoney(total);
+      metricTotal.textContent = formatMoney(total);
+      metricVsCurrent.textContent = `${total >= currentTotal ? "+" : "-"}${formatMoney(Math.abs(total - currentTotal))} vs current`;
+      metricVsLast.textContent = `${total >= lastTotal ? "+" : "-"}${Math.round(Math.abs(total - lastTotal) / lastTotal * 100)}%`;
+      metricPeak.textContent = months[peakIndex].name;
+      metricPeakCopy.textContent = peakIndex === 10 ? "unchanged" : "changed from Nov";
+      metricDays.textContent = activeMethod === "equal-year" ? "365 / 365" : "287 / 365";
+      yearlyInput.value = formatNumber(total);
+    }
+
+    function updateSubtitle() {
+      if (activeMode === "daily" && uploadedDaily) {
+        chartSubtitle.textContent = "Uploaded daily values are previewed directly. Smart smoothing is optional.";
+      } else if (activeMethod === "raw") {
+        chartSubtitle.textContent = "Monthly values are shown as raw stepped daily blocks before allocation.";
+      } else if (activeMethod === "smart") {
+        chartSubtitle.textContent = "Smart allocation smooths the monthly target into daily values.";
+      } else if (activeMethod === "equal-month") {
+        chartSubtitle.textContent = "Each month is distributed evenly across its own days.";
+      } else {
+        chartSubtitle.textContent = "The yearly total is distributed evenly across all 365 days.";
+      }
+    }
+
+    function updateAll() {
+      updateMetrics();
+      updateSubtitle();
+      renderMonths();
+      renderChart();
+    }
+
+    function setMode(mode) {
+      activeMode = mode;
+      document.querySelectorAll(".tab-btn").forEach((button) => {
+        button.classList.toggle("active", button.dataset.mode === mode);
+      });
+      document.querySelectorAll(".mode-panel").forEach((panel) => panel.classList.add("hidden"));
+      document.getElementById(`${mode}Panel`).classList.remove("hidden");
+      allocationPanel.classList.toggle("hidden", mode === "daily");
+      updateSubtitle();
+      renderChart();
+    }
+
+    function setMethod(method) {
+      activeMethod = method;
+      monthMethods.forEach((_, index) => {
+        monthMethods[index] = method;
+      });
+      document.querySelectorAll(".method-card[data-method]").forEach((card) => {
+        card.classList.toggle("active", card.dataset.method === method);
+      });
+      updateAll();
+    }
+
+    function openModal(index) {
+      selectedMonthIndex = index;
+      const month = months[index];
+      document.getElementById("modalTitle").textContent = `Fine-tune ${month.name} daily values`;
+      modalBackdrop.classList.remove("hidden");
+      renderDailyGrid();
+    }
+
+    function renderDailyGrid() {
+      const month = months[selectedMonthIndex];
+      const method = monthMethods[selectedMonthIndex];
+      const pins = monthPins[selectedMonthIndex];
+      const values = [];
+      const weights = weightedDays(month, method, selectedMonthIndex);
+      const pinnedIndexes = Object.keys(pins).map(Number);
+      const pinnedTotal = pinnedIndexes.reduce((sum, dayIndex) => sum + pins[dayIndex], 0);
+      const unlockedWeight = weights.reduce((sum, value, dayIndex) => pinnedIndexes.includes(dayIndex) ? sum : sum + value, 0);
+      weights.forEach((weight, dayIndex) => {
+        if (pins[dayIndex] !== undefined) {
+          values.push(pins[dayIndex]);
+        } else {
+          values.push((month.amount - pinnedTotal) * weight / unlockedWeight);
+        }
+      });
+
+      document.getElementById("modalTotal").textContent = formatMoney(month.amount);
+      document.getElementById("modalAverage").textContent = formatMoney(month.amount / month.days);
+      document.getElementById("modalMethod").textContent = `${methodLabels[method]} allocation`;
+      document.getElementById("modalCustom").textContent = `${pinnedIndexes.length} / ${month.days}`;
+
+      document.querySelectorAll(".modal-method").forEach((button) => {
+        button.classList.toggle("active", button.dataset.modalMethod === method);
+      });
+
+      dailyGrid.innerHTML = values.map((value, index) => `
+        <label class="day-cell ${pins[index] !== undefined ? "locked" : ""}">
+          <span class="day-top"><span>${index + 1}</span><span>${pins[index] !== undefined ? "pin" : ""}</span></span>
+          <input data-day="${index}" value="${formatNumber(value)}" aria-label="${month.name} ${index + 1} revenue target">
+        </label>
+      `).join("");
+
+      dailyGrid.querySelectorAll("input").forEach((input) => {
+        input.addEventListener("change", (event) => {
+          const dayIndex = Number(event.currentTarget.dataset.day);
+          monthPins[selectedMonthIndex][dayIndex] = parseMoney(event.currentTarget.value);
+          renderDailyGrid();
+          renderChart();
+        });
+      });
+    }
+
+    document.querySelectorAll(".tab-btn").forEach((button) => {
+      button.addEventListener("click", () => setMode(button.dataset.mode));
+    });
+
+    document.querySelectorAll(".method-card[data-method]").forEach((button) => {
+      button.addEventListener("click", () => setMethod(button.dataset.method));
+    });
+
+    document.querySelectorAll(".view-btn").forEach((button) => {
+      button.addEventListener("click", () => {
+        activeView = button.dataset.view;
+        document.querySelectorAll(".view-btn").forEach((item) => item.classList.toggle("active", item === button));
+        const window = document.getElementById("miniWindow");
+        if (activeView === "year") {
+          window.style.left = "20%";
+          window.style.width = "34%";
+        } else if (activeView === "quarter") {
+          window.style.left = "42%";
+          window.style.width = "24%";
+        } else {
+          window.style.left = "45%";
+          window.style.width = "10%";
+        }
+      });
+    });
+
+    yearlyInput.addEventListener("input", () => {
+      const total = parseMoney(yearlyInput.value);
+      const currentTotal = totalAmount() || 1;
+      months.forEach((month) => {
+        month.amount = total * (month.amount / currentTotal);
+      });
+      updateAll();
+    });
+
+    yearlyInput.addEventListener("blur", () => {
+      yearlyInput.value = formatNumber(totalAmount());
+    });
+
+    document.getElementById("uploadBtn").addEventListener("click", () => {
+      uploadedDaily = true;
+      document.getElementById("uploadTitle").textContent = "daily_target_acme_fr_2026.csv uploaded";
+      document.getElementById("uploadCopy").textContent = "365 daily values loaded. Review the graph before validating the scenario.";
+      document.getElementById("reuploadBtn").classList.remove("hidden");
+      document.getElementById("smartCsvBtn").classList.remove("hidden");
+      updateSubtitle();
+    });
+
+    document.getElementById("reuploadBtn").addEventListener("click", () => {
+      document.getElementById("uploadTitle").textContent = "Replacement CSV uploaded";
+      document.getElementById("uploadCopy").textContent = "The previous daily file was replaced and the graph has been recalculated.";
+      showToast("CSV replaced. Daily scenario recalculated.");
+    });
+
+    document.getElementById("smartCsvBtn").addEventListener("click", () => {
+      showToast("Smart smoothing applied on top of uploaded daily values.");
+    });
+
+    document.getElementById("closeModal").addEventListener("click", () => {
+      modalBackdrop.classList.add("hidden");
+    });
+
+    modalBackdrop.addEventListener("click", (event) => {
+      if (event.target === modalBackdrop) {
+        modalBackdrop.classList.add("hidden");
+      }
+    });
+
+    document.querySelectorAll(".modal-method").forEach((button) => {
+      button.addEventListener("click", () => {
+        const action = button.dataset.modalMethod;
+        if (action === "reset") {
+          monthPins[selectedMonthIndex] = {};
+        } else {
+          monthMethods[selectedMonthIndex] = action;
+        }
+        renderDailyGrid();
+        updateAll();
+      });
+    });
+
+    document.getElementById("applyMonth").addEventListener("click", () => {
+      modalBackdrop.classList.add("hidden");
+      showToast(`${months[selectedMonthIndex].name} daily changes applied. Monthly total stayed fixed.`);
+    });
+
+    document.getElementById("resetBtn").addEventListener("click", () => {
+      const defaults = [25000, 22000, 28000, 30000, 32000, 29000, 26000, 20000, 31000, 34000, 38000, 35000];
+      months.forEach((month, index) => {
+        month.amount = defaults[index];
+        monthMethods[index] = "smart";
+        monthPins[index] = {};
+      });
+      setMethod("smart");
+      showToast("Scenario reset to the starting monthly values.");
+    });
+
+    document.getElementById("validateBtn").addEventListener("click", () => {
+      showToast("Scenario validated. The Budget Overview table now references this target.");
+    });
+
+    function showToast(message) {
+      toast.textContent = message;
+      toast.classList.add("show");
+      window.clearTimeout(showToast.timer);
+      showToast.timer = window.setTimeout(() => toast.classList.remove("show"), 2800);
+    }
+
+    renderMonths();
+    renderChart();
+    updateMetrics();
+  </script>
+</body>
+</html>

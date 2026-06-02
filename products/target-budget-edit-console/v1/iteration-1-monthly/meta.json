@@ -1,0 +1,21 @@
+{
+  "id": "v1-iter01",
+  "version": "v1",
+  "label": "Monthly target budget edit console",
+  "author": null,
+  "createdAt": "2026-06-01",
+  "tags": ["internal-review", "interactive-prototype"],
+  "description": "Interactive Omny-style Budget Cockpit editor for building and validating a monthly revenue target scenario.",
+  "supersedes": null,
+  "presentationGroup": null,
+  "changesFromPrevious": [],
+  "feedbackAddressed": [
+    "Frames the feature as a revenue target scenario builder, not an ad spend budget tool.",
+    "Shows seller, marketplace, year, and currency as read-only context inherited from the Budget Overview row.",
+    "Keeps monthly as the primary input mode, yearly as secondary, and daily as CSV upload only.",
+    "Removes weekly input, draft save, editable currency, and K abbreviations.",
+    "Makes allocation methods immediate action buttons with Smart highlighted as recommended.",
+    "Adds a reactive scenario preview graph with current target and last-year context.",
+    "Adds a daily fine-tune modal where pinned day edits redistribute unlocked days while preserving the monthly total."
+  ]
+}

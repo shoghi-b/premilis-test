@@ -1,0 +1,22 @@
+{
+  "id": "dsp-reporting-v1-iteration-1",
+  "version": "v1",
+  "label": "DSP reporting conversion replica",
+  "author": "Rushali",
+  "createdAt": "2026-06-01",
+  "tags": ["figma-replica", "internal-review"],
+  "description": "Replicates the Omny DSP reporting Conversion screen with grouped metrics and a horizontally scrollable full table.",
+  "figma": {
+    "file": "PPC - Omny Interface Designs",
+    "fileKey": "g7CLQTPWTcmGdKHEY7Kl4n",
+    "screenNodeId": "10994:62853",
+    "fullTableNodeId": "10994:68084"
+  },
+  "supersedes": null,
+  "presentationGroup": null,
+  "changesFromPrevious": [],
+  "feedbackAddressed": [
+    "Creates the initial visual baseline for the DSP reporting feature.",
+    "Includes the full grouped table column set from the horizontal-scroll Figma reference."
+  ]
+}
