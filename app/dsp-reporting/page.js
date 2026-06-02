@@ -69,6 +69,7 @@ const COLUMN_WIDTHS = [32, 120, 159, 106, 115, 204, 108, 108, 166, 198, 220, 184
 const TABLE_WIDTH = COLUMN_WIDTHS.reduce((sum, width) => sum + width, 0);
 const REACH_WEEKLY_ONLY_COLUMN_INDEXES = [9, 10];
 const FIRST_HEADER_HEIGHT = 29;
+const SECOND_HEADER_HEIGHT = 28;
 
 function Change({ value }) {
   const sign = value > 0 ? "+" : "";
@@ -153,13 +154,10 @@ function formatReach(value) {
   return compactFormatter.format(value).replace("M", "M").replace("K", "K");
 }
 
-function ReachAdrCell({ value, change, width }) {
+function ReachAdrCell({ value, change }) {
   return (
     <div className={`${styles.cellFlex} ${styles.left}`}>
       <span>{formatReach(value)}</span>
-      <span className={styles.indigoTrack}>
-        <span style={{ width: `${width}%` }} />
-      </span>
       <Change value={change} />
     </div>
   );
@@ -169,19 +167,51 @@ function ReachComparisonCell({ primary, secondary }) {
   return <ComparisonVizCellWithTone primary={formatReach(primary)} secondary={formatReach(secondary)} tone="reach" />;
 }
 
-function ReachSplitCell({ cumulative, retainers, newcomers, churners }) {
+function ReachSplitCell({ cumulative, retainers, newcomers, churners, showTooltip }) {
   const totalWithChurn = cumulative + churners;
   const retainersWidth = (retainers / totalWithChurn) * 100;
   const newcomersWidth = (newcomers / totalWithChurn) * 100;
   const churnersWidth = (churners / totalWithChurn) * 100;
   return (
-    <div className={`${styles.cellFlex} ${styles.left}`}>
+    <div className={`${styles.reachSplitCell} ${styles.left}`}>
       <span>{formatReach(cumulative)}</span>
       <span className={styles.reachStackedTrack}>
         <span className={styles.reachStackedIncluded} style={{ width: `${retainersWidth}%` }} />
         <span className={styles.reachStackedNew} style={{ width: `${newcomersWidth}%` }} />
         <span className={styles.reachStackedExcluded} style={{ width: `${churnersWidth}%` }} />
       </span>
+      {showTooltip ? (
+        <div className={styles.reachSplitTooltip} role="tooltip" aria-label="Weekly reach split details">
+          <div className={styles.reachTooltipHeader}>
+            <p className={styles.reachTooltipTitle}>Weekly Reach Split</p>
+            <p className={styles.reachTooltipValue}>{formatReach(cumulative)}</p>
+          </div>
+          <div className={styles.reachTooltipContent}>
+            <div className={styles.reachTooltipTrack}>
+              <span className={styles.reachTooltipIncluded} style={{ width: `${retainersWidth}%` }} />
+              <span className={styles.reachTooltipNew} style={{ width: `${newcomersWidth}%` }} />
+              <span className={styles.reachTooltipExcluded} style={{ width: `${churnersWidth}%` }} />
+            </div>
+            <div className={styles.reachTooltipList}>
+              <div className={styles.reachTooltipRow}>
+                <span className={styles.reachTooltipDotIncluded} />
+                <span className={styles.reachTooltipLabel}>Retainer customers</span>
+                <span className={styles.reachTooltipCount}>{formatReach(retainers)}</span>
+              </div>
+              <div className={styles.reachTooltipRow}>
+                <span className={styles.reachTooltipDotNew} />
+                <span className={styles.reachTooltipLabel}>New customers</span>
+                <span className={styles.reachTooltipCount}>{formatReach(newcomers)}</span>
+              </div>
+              <div className={styles.reachTooltipRow}>
+                <span className={styles.reachTooltipDotExcluded} />
+                <span className={styles.reachTooltipLabel}>Churners</span>
+                <span className={styles.reachTooltipCount}>{formatReach(churners)}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      ) : null}
     </div>
   );
 }
@@ -200,7 +230,7 @@ function WeeklyColumnOverlay({ label }) {
 export default function DspReportingPage() {
   const [granularity, setGranularity] = useState("Weekly");
 
-  const isWeeklyOnlyView = WEEKLY_ONLY_GRANULARITIES.has(granularity);
+  const isNonWeeklyView = WEEKLY_ONLY_GRANULARITIES.has(granularity);
 
   const scaledReachRows = useMemo(() => {
     const multiplier = ADR_MULTIPLIER[granularity] ?? 1;
@@ -361,7 +391,6 @@ export default function DspReportingPage() {
                     const [period, customers, customerChange, roas, roasWidth, cpa, cpaChange, spend, sales, assist, units, unitsChange, atc, atcViews, dpv, dpvViews, brandSearch, ecpm, impressions, vtr, deliveryRate, ntb, dpvr, postClick, halo] = row;
                     const spendWidth = 30 + (index % 5) * 9;
                     const reachRow = scaledReachRows[index];
-                    const reachWidth = 28 + (index % 4) * 16;
                     return (
                       <tr key={`${period}-${index}`}>
                         <td className={styles.zoom}><SearchRefraction className={styles.zoomIcon} /></td>
@@ -373,18 +402,23 @@ export default function DspReportingPage() {
                         <td className={styles.business}><BlueCell value={assist} width={spendWidth} /></td>
                         <td className={`${styles.business} ${styles.right}`}><span>{units}</span> <Change value={unitsChange} /></td>
                         <td className={styles.newReach}>
-                          <ReachAdrCell value={reachRow.adrScaled} change={reachRow.adrChange} width={reachWidth} />
+                          <ReachAdrCell value={reachRow.adrScaled} change={reachRow.adrChange} />
+                        </td>
+                        <td className={`${styles.newReach} ${styles.reachSplitColumn}`}>
+                          <div className={isNonWeeklyView ? styles.weeklyHiddenContent : ""}>
+                            <ReachSplitCell
+                              cumulative={reachRow.weeklyCumulative}
+                              retainers={reachRow.retainers}
+                              newcomers={reachRow.newcomers}
+                              churners={reachRow.churners}
+                              showTooltip={!isNonWeeklyView}
+                            />
+                          </div>
                         </td>
                         <td className={styles.newReach}>
-                          <ReachSplitCell
-                            cumulative={reachRow.weeklyCumulative}
-                            retainers={reachRow.retainers}
-                            newcomers={reachRow.newcomers}
-                            churners={reachRow.churners}
-                          />
-                        </td>
-                        <td className={styles.newReach}>
-                          <ReachComparisonCell primary={reachRow.weeklyCumulative} secondary={reachRow.theoretical} />
+                          <div className={isNonWeeklyView ? styles.weeklyHiddenContent : ""}>
+                            <ReachComparisonCell primary={reachRow.weeklyCumulative} secondary={reachRow.theoretical} />
+                          </div>
                         </td>
                         <td className={styles.brand}><ComparisonVizCell primary={atc} secondary={atcViews} /></td>
                         <td className={styles.brand}><ComparisonVizCell primary={dpv} secondary={dpvViews} /></td>
@@ -402,7 +436,7 @@ export default function DspReportingPage() {
                   })}
                 </tbody>
               </table>
-              {isWeeklyOnlyView && (
+              {isNonWeeklyView && (
                 <div className={styles.weeklyColumnOverlayLayer} aria-hidden="true">
                   {weeklyOverlayColumns.map((column) => (
                     <div
@@ -411,7 +445,7 @@ export default function DspReportingPage() {
                       style={{
                         left: column.left,
                         width: column.width,
-                        top: FIRST_HEADER_HEIGHT,
+                        top: FIRST_HEADER_HEIGHT + SECOND_HEADER_HEIGHT,
                       }}
                     >
                       <WeeklyColumnOverlay label="reach KPI" />
